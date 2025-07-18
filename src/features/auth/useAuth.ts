@@ -1,0 +1,18 @@
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
+/**
+ * useAuth hook extracts the current user's role from Redux state
+ */
+export function useAuth() {
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  let role: 'admin' | 'user' | 'guest' = 'guest';
+  if (user?.role === 'admin') role = 'admin';
+  else if (user?.role === 'user') role = 'user';
+
+  return {
+    isAuthenticated: !!user,
+    role,
+    user,
+  };
+}
