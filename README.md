@@ -67,26 +67,23 @@ CVC: Any 3 digits
 ## 📷 Screenshots
 
 ### 🔐 Login Page  
-![Login Page](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/login_page.png?raw=true)
+![Login Page](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/loginPage.png?raw=true)
 
 ### 🏠 Homepage with Search & Filters  
-![Homepage](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/homepage.png?raw=true)
-![Search & Filters](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/search.png?raw=true)
+![Homepage](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/homePage.png?raw=true)
+![Search & Filters]([https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/search.png?raw=true](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/navigator.png?raw=true))
 
-### 🍕 Product List  
-![Product List](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/product-list.png?raw=true)
-
-### 🛒 Cart with Redux  
-![Cart](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/cart.png?raw=true)
+### 🍕 Restaurant  
+![Restaurant](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/restaurantPage.png?raw=true)
+![Menu](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/restaurantMenu.png?raw=true)
+![Food](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/food.png?raw=true)
 
 ### 💳 Stripe Checkout  
-![Checkout](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/confirmation.png?raw=true)
+![Checkout](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/checkout.png?raw=true)
 
-### ✅ Orders
-![Orders](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/orders.png?raw=true)
+### ✅ Profile
+![Profile](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/profilePage.png?raw=true)
 
-### ❤️ Favourites
-![Favourites](https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/favourites.png?raw=true)
 
 ---
 
@@ -96,8 +93,8 @@ CVC: Any 3 digits
 
 ```bash
 # Frontend
-git clone https://github.com/Gilson96/mern-foods.git
-cd mern-foods
+git clone https://github.com/Gilson96/mern-food.git
+cd mern-food
 npm install
 npm run dev
 
@@ -114,11 +111,6 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET_KEY=your_stripe_secret
 ```
-
-### 3. Update Frontend API URL
-If you develop locally, please ensure the frontend uses your local API (e.g., via .env or direct configuration).
-
----
 
 ## 📌 Project Highlights
 
