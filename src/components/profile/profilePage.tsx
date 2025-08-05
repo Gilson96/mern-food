@@ -22,8 +22,7 @@ const ProfilePage = () => {
     listData,
     isLoading: listDataLoading,
     isFetching: listDataFecthing,
-    refetch,
-  } = useListTabsData();
+  } = useListTabsData(undefined);
   const { data: userDetails, isLoading, isFetching } = useGetUserQuery();
   const { state }: ProfilePageProps = useLocation();
   const findUser = userDetails?.find((u) => u.role === user.role);

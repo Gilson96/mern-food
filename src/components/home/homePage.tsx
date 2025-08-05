@@ -30,7 +30,7 @@ const HomePage = () => {
     price: 'lowest',
   });
   const screenSize = useScreenSize();
-  const { listData, isLoading, isFetching } = useListTabsData();
+  const { listData, isLoading, isFetching } = useListTabsData(undefined);
   const loading = isLoading || isFetching;
 
   const highestRatedRestaurant = listData?.restaurants?.filter(
@@ -40,7 +40,6 @@ const HomePage = () => {
     (restaurant) => parseFloat(restaurant.deliveryFee) < 5,
   );
   const fastestRestaurant = listData?.restaurants?.filter((restaurant) => restaurant.arrival < 29);
-  console.log(state);
   return (
     <>
       <Navigator loading={loading} setIsFiltered={setIsFiltered} listData={listData} />
@@ -78,9 +77,21 @@ const HomePage = () => {
             />
           ) : (
             <div className="flex flex-col gap-5 overflow-hidden">
-              <FeaturedRestaurant setIsFiltered={setIsFiltered}  feature={highestRatedRestaurant} title="Highest rated" />
-              <FeaturedRestaurant setIsFiltered={setIsFiltered} feature={fastestRestaurant} title="In a rush" />
-              <FeaturedRestaurant setIsFiltered={setIsFiltered} feature={lowCostFeeRestaurant} title="Low cost delivery" />
+              <FeaturedRestaurant
+                setIsFiltered={setIsFiltered}
+                feature={highestRatedRestaurant}
+                title="Highest rated"
+              />
+              <FeaturedRestaurant
+                setIsFiltered={setIsFiltered}
+                feature={fastestRestaurant}
+                title="In a rush"
+              />
+              <FeaturedRestaurant
+                setIsFiltered={setIsFiltered}
+                feature={lowCostFeeRestaurant}
+                title="Low cost delivery"
+              />
             </div>
           )}
         </div>

@@ -8,12 +8,10 @@ import SearchRestaurantTabsContent, {
 import SearchRestaurantTabs from './searchRestaurantTabs';
 import { SearchRestaurantProps } from './homePage';
 import { Link } from 'react-router-dom';
-import { Food, Meal } from '@/hooks/dataTypes';
-
-type FoodOrMeal = (Food & { type: 'food' }) | (Meal & { type: 'meal' });
 
 const SearchRestaurantsDesktop = ({ listData, loading, setIsFiltered }: SearchRestaurantProps) => {
   const [inputValue, setInputValue] = useState('');
+  const [open, setOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,6 +63,7 @@ const SearchRestaurantsDesktop = ({ listData, loading, setIsFiltered }: SearchRe
                     setIsFiltered={setIsFiltered}
                     listData={listData}
                     loading={loading}
+                    setOpen={setOpen}
                   />
                 ) : (
                   <>

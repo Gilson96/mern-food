@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "lib": ["dom", "esnext"],
+    "types": ["node", "react", "react-dom"], 
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noEmit": false,
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -11,6 +16,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/types/jsx.d.ts"],
   "exclude": ["node_modules"]
 }

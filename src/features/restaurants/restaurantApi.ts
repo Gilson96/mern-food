@@ -18,7 +18,7 @@ const restaurantApi = indexApi.injectEndpoints({
     }),
 
     getFoods: build.query<Food[], string>({
-      query: (restaurantId) => ({ url: `foods` }),
+      query: () => ({ url: `foods` }),
       providesTags: (result, error, restaurantId) => [{ type: 'Food', id: restaurantId }],
     }),
 
@@ -26,7 +26,7 @@ const restaurantApi = indexApi.injectEndpoints({
       query: (_id) => {
         return { url: `/${_id}/reviews` };
       },
-        providesTags: (result, error, restaurantId) => [{ type: 'Review', id: restaurantId }],
+      providesTags: (result, error, restaurantId) => [{ type: 'Review', id: restaurantId }],
     }),
   }),
   overrideExisting: true,

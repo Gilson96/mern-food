@@ -4,10 +4,10 @@ import {
   useGetFoodsQuery,
 } from '@/features/restaurants/restaurantApi';
 
-export const useListTabsData = () => {
+export const useListTabsData = (restaurant_id?: string) => {
   const categoriesQuery = useGetCategoriesQuery();
   const restaurantsQuery = useGetRestaurantsQuery();
-  const foodsQuery = useGetFoodsQuery();
+  const foodsQuery = useGetFoodsQuery(restaurant_id!);
 
   return {
     listData: {

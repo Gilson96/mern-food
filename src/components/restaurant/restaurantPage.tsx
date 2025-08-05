@@ -12,7 +12,7 @@ const RestaurantPage = () => {
   const { state } = useLocation();
   const { restaurantId } = useParams();
   const { data: restaurant, isLoading, isFetching } = useGetRestaurantQuery(restaurantId!);
-  const { listData, isLoading: ListIsLoading, isFetching: ListIsFetching } = useListTabsData();
+  const { listData, isLoading: ListIsLoading, isFetching: ListIsFetching } = useListTabsData(restaurantId);
   const screenSize = useScreenSize();
   const listDataLoading = ListIsFetching || ListIsLoading;
 
