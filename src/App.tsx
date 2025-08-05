@@ -1,15 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useAuth } from './features/auth/useAuth';
-
-// import HomePage from '@/pages/HomePage';
 import LoginPage from './components/login/loginPage';
 import { Toaster } from 'sonner';
-// import AdminDashboard from '@/pages/admin/AdminDashboard';
-// import UserProfile from '@/pages/user/UserProfile';
-// import NotFound from '@/pages/NotFound';
+import HomePage from './components/home/homePage';
+import GuestAddressPage from './components/home/guestAddressPage';
+import RestaurantPage from './components/restaurant/restaurantPage';
+import CheckoutPage from './components/checkout/checkout';
+import ProfilePage from './components/profile/profilePage';
 
 function App() {
-  const { role } = useAuth(); // "admin" | "user" | "guest"
+  const { role } = useAuth();
 
   return (
     <>
@@ -17,15 +17,15 @@ function App() {
       <Router>
         <Routes>
           {/* Public */}
-          {/* <Route path="/" element={<HomePage />} /> */}
+          <Route path="/home" element={<HomePage />} />
           <Route path="/" element={<LoginPage />} />
+          <Route path="/restaurant/:restaurantId" element={<RestaurantPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
+          {/* Guest-only */}
+          {role === 'guest' && <Route path="/guestAddress" element={<GuestAddressPage />} />}
           {/* User-only */}
-          {/* {role === 'user' && <Route path="/profile" element={<UserProfile />} />} */}
-
-          {/* Admin-only */}
-          {/* {role === 'admin' && <Route path="/admin" element={<AdminDashboard />} />} */}
-
+          {role !== 'guest' && <Route path="/profile" element={<ProfilePage />} />}
           {/* Catch-all */}
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>

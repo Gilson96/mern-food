@@ -1,39 +1,41 @@
-import { MealResponse } from '@/hooks/dataTypes';
-import { indexSlice } from '../indexApi';
+import { Meal, Food, Review } from '@/hooks/dataTypes';
+import { indexApi } from '../indexApi';
 
-const restaurantApi = indexSlice.injectEndpoints({
+const restaurantApi = indexApi.injectEndpoints({
   endpoints: (build) => ({
-    getCategories: build.query<MealResponse, void>({
-      query: () => ({ url: '/category' }),
+    getCategories: build.query<[{ _id: string; name: string }], void>({
+      query: () => ({ url: '/categories' }),
     }),
 
-    getRestaurants: build.query<MealResponse, void>({
-      query: () => ({ url: '/restaurant' }),
+    getRestaurants: build.query<Meal[], void>({
+      query: () => ({ url: '/restaurants' }),
+      providesTags: ['Restaurant'],
     }),
 
-    getRestaurant: build.query<MealResponse, string>({
+    getRestaurant: build.query<Meal, string>({
       query: (_id) => ({ url: `/restaurant/${_id}` }),
+      providesTags: ['Restaurant'],
     }),
 
-    getRestaurantFoods: build.query<MealResponse, string>({
-      query: (_id) => {
-        return { url: `/${_id}/food` };
-      },
+    getFoods: build.query<Food[], string>({
+      query: (restaurantId) => ({ url: `foods` }),
+      providesTags: (result, error, restaurantId) => [{ type: 'Food', id: restaurantId }],
     }),
 
-    getRestaurantReviews: build.query<MealResponse, string>({
+    getRestaurantReviews: build.query<Review, string>({
       query: (_id) => {
         return { url: `/${_id}/reviews` };
       },
+        providesTags: (result, error, restaurantId) => [{ type: 'Review', id: restaurantId }],
     }),
   }),
-  overrideExisting: false,
+  overrideExisting: true,
 });
 
 export const {
   useGetCategoriesQuery,
   useGetRestaurantsQuery,
   useGetRestaurantQuery,
-  useGetRestaurantFoodsQuery,
+  useGetFoodsQuery,
   useGetRestaurantReviewsQuery,
 } = restaurantApi;

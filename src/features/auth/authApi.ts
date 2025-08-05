@@ -1,4 +1,4 @@
-import { LoginRequest, Meal, PaymenyIntent, User, UserResponse } from '@/hooks/dataTypes';
+import { Food, LoginRequest, Meal, PaymentIntent, User, UserResponse } from '@/hooks/dataTypes';
 import { indexApi } from '../indexApi';
 
 const auth = indexApi.injectEndpoints({
@@ -9,10 +9,12 @@ const auth = indexApi.injectEndpoints({
         method: 'POST',
         body: credentials,
       }),
+      invalidatesTags: ['User'],
     }),
 
-    getUser: build.query<User, void>({
-      query: () => ({ url: '/user' }),
+    getUser: build.query<User[], void>({
+      query: () => ({ url: 'user' }),
+      providesTags: ['User'],
     }),
 
     logout: build.mutation<UserResponse, void>({
@@ -20,6 +22,7 @@ const auth = indexApi.injectEndpoints({
         url: 'logout',
         method: 'POST',
       }),
+      invalidatesTags: ['User'],
     }),
 
     postToFavourite: build.mutation<
@@ -36,27 +39,23 @@ const auth = indexApi.injectEndpoints({
         };
       }
     >({
-      query: (data) => {
-        const { userId, body } = data;
-        return {
-          url: `${userId}/favourites`,
-          method: 'POST',
-          body,
-        };
-      },
+      query: ({ userId, body }) => ({
+        url: `${userId}/favourites`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['User'],
     }),
 
     removeFromFavourite: build.mutation<
       UserResponse,
       { userId: string | undefined; restaurantId: string | undefined }
     >({
-      query: (data) => {
-        const { userId, restaurantId } = data;
-        return {
-          url: `${userId}/favourites/${restaurantId}`,
-          method: 'POST',
-        };
-      },
+      query: ({ userId, restaurantId }) => ({
+        url: `${userId}/favourites/${restaurantId}`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['User'],
     }),
 
     postToOrders: build.mutation<
@@ -64,8 +63,7 @@ const auth = indexApi.injectEndpoints({
       {
         _id: string;
         body: {
-          restaurantId: string;
-          foods: Meal[];
+          foods: Food[];
           totalPrice: number;
           timeStamp: number;
         };
@@ -79,18 +77,78 @@ const auth = indexApi.injectEndpoints({
           body,
         };
       },
+      invalidatesTags: ['User'],
     }),
 
-    postPayementIntent: build.mutation<PaymenyIntent, PaymenyIntent>({
+    postPayementIntent: build.mutation<PaymentIntent, PaymentIntent>({
       query: (body) => ({
         url: `payment-intent`,
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['User'],
+    }),
+
+    postCreateRestaurant: build.mutation({
+      query: ({ categoryId, body }: { categoryId: string; body: FormData }) => ({
+        url: `restaurant/${categoryId}`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Restaurant'],
+    }),
+
+    putUpdateRestaurant: build.mutation({
+      query: ({
+        restaurantId,
+        body,
+      }: {
+        restaurantId: string;
+        body: { poster_image: string };
+      }) => ({
+        url: `restaurant/${restaurantId}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['Restaurant'],
+    }),
+
+    postCreateFood: build.mutation({
+      query: ({ restaurantId, body }) => ({
+        url: `${restaurantId}/food`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: (result, error, { restaurantId }) => [{ type: 'Food', id: restaurantId }],
+    }),
+
+    putUpdateFood: build.mutation({
+      query: ({
+        restaurantId,
+        foodId,
+        body,
+      }: {
+        restaurantId: string;
+        foodId: string;
+        body: { poster_image: string };
+      }) => ({
+        url: `${restaurantId}/food/${foodId}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['Food'],
+    }),
+    postCreateReview: build.mutation({
+      query: ({ restaurantId, body }) => ({
+        url: `${restaurantId}/reviews`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: (result, error, { restaurantId }) => [{ type: 'Review', id: restaurantId }],
     }),
   }),
 
-  overrideExisting: false,
+  overrideExisting: true,
 });
 
 export const {
@@ -101,4 +159,9 @@ export const {
   useRemoveFromFavouriteMutation,
   usePostToOrdersMutation,
   usePostPayementIntentMutation,
+  usePostCreateRestaurantMutation,
+  usePostCreateFoodMutation,
+  usePutUpdateRestaurantMutation,
+  usePutUpdateFoodMutation,
+  usePostCreateReviewMutation
 } = auth;

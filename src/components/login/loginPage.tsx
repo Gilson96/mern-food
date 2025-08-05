@@ -3,7 +3,7 @@ import { Button } from '../ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../ui/card';
 import { Input } from '../ui/input';
 import { LoaderCircle, Utensils } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useLoginMutation } from '@/features/auth/authApi';
 import { toast } from 'sonner';
@@ -18,16 +18,13 @@ const LoginPage = () => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const userData = Object.fromEntries(formData.entries());
-    let { email, password } = userData;
-    email = String(email);
-    password = String(password);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
+    console.log(email);
     try {
       const userLogin = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...userLogin }));
-      email = '';
-      password = '';
       navigate('/home');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
@@ -45,7 +42,7 @@ const LoginPage = () => {
           <CardTitle className="flex items-center gap-1">
             <Utensils color="oklch(72.3% 0.219 149.579)" />
             <p className="flex text-2xl">
-              <span className="font-bold text-green-500">Mern</span>
+              <span className="font-medium text-green-500">Mern</span>
               <span>-foods</span>
             </p>
           </CardTitle>
@@ -55,13 +52,13 @@ const LoginPage = () => {
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="m@example.com" required />
+                <Input id="email" name="email" type="email" placeholder="m@example.com" />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" name="password" type="password" placeholder='abc123' />
               </div>
             </div>
             <div className="flex w-full flex-col gap-2">
@@ -71,8 +68,8 @@ const LoginPage = () => {
               >
                 {isLoading ? <LoaderCircle color="white" className="animate-spin" /> : 'Login'}
               </button>
-              <Button variant="outline" className="w-full cursor-pointer">
-                Continue as a guest
+              <Button asChild variant="outline" className="w-full cursor-pointer">
+                <Link to={'/guestAddress'}>Continue as a guest</Link>
               </Button>
             </div>
           </form>
