@@ -8,12 +8,13 @@ const auth = indexApi.injectEndpoints({
         url: 'login',
         method: 'POST',
         body: credentials,
+        credentials: 'include',
       }),
       invalidatesTags: ['User'],
     }),
 
     getUser: build.query<User[], void>({
-      query: () => ({ url: 'user' }),
+      query: () => ({ url: 'user', credentials: "include" }),
       providesTags: ['User'],
     }),
 
