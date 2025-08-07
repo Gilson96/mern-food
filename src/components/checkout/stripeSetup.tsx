@@ -1,7 +1,6 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { persistor } from '../../store';
 import { useGetUserQuery, usePostToOrdersMutation } from '@/features/auth/authApi';
 import { toast } from 'sonner';
 import { emptyCart, RestaurantCart } from '@/features/cart/cartSlice';
@@ -9,7 +8,6 @@ import { Button } from '../ui/button';
 import { useAuth } from '@/features/auth/useAuth';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
-
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 type StripeSetupProps = {
@@ -23,20 +21,22 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
   const elements = useElements();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { data: userId, isLoading: userLoading } = useGetUserQuery();
   const [addToOrders, { isLoading }] = usePostToOrdersMutation();
   const [showSuccess, setShowSuccess] = useState(false);
 
   const allFoods = foodsInTheBasket.flatMap((entry) => entry.foods);
 
-  if (userLoading)
-    return (
-      <i className="animate-spin">
-        <Loader2 />
-      </i>
-    );
-
   const findUserId = userId?.find((u) => u.role === user.role)?._id;
+
+  if (userLoading) {
+    return (
+      <div className="flex w-full items-center justify-center py-8">
+        <Loader2 className="h-6 w-6 animate-spin text-green-600" />
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,18 +45,19 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
     const result = await stripe.confirmPayment({ elements, redirect: 'if_required' });
 
     if (result.error) {
-      console.log(result.error.message);
-      toast('an error occurred', { position: 'top-center' });
+      console.error(result.error.message);
+      toast('An error occurred', { position: 'top-center' });
     } else {
-      user.role !== 'guest' &&
-        (await addToOrders({
+      if (user.role !== 'guest') {
+        await addToOrders({
           _id: findUserId!,
           body: {
             foods: allFoods,
             totalPrice,
             timeStamp: result.paymentIntent.created,
           },
-        }).unwrap());
+        }).unwrap();
+      }
 
       setShowSuccess(true);
       setTimeout(() => {
@@ -68,10 +69,22 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} id="payment-form" className="flex flex-col gap-2">
+      <form onSubmit={handleSubmit} id="payment-form" className="flex flex-col gap-4">
         <PaymentElement id="payment-element" />
-        <Button disabled={!stripe} type="submit" className="bg-green-500">
-          Pay Now
+
+        <Button
+          type="submit"
+          className="bg-green-500 text-white hover:bg-green-600"
+          disabled={!stripe || isLoading}
+        >
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Processing...
+            </span>
+          ) : (
+            'Pay Now'
+          )}
         </Button>
       </form>
 

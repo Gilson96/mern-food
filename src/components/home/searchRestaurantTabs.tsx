@@ -5,7 +5,7 @@ import SearchRestaurantTabsContent, {
   renderAvatar,
 } from './searchRestaurantTabsContent';
 import { Link } from 'react-router-dom';
-import { HomePageProps, SearchRestaurantProps } from './homePage';
+import { HomePageProps } from './homePage';
 import { ListData } from '@/hooks/dataTypes';
 
 type SearchRestaurantTabsProps = {

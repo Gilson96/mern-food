@@ -20,7 +20,15 @@ type RestaurantFormProps = {
 const RestaurantForm = ({ register, errors, control, setCategoryId }: RestaurantFormProps) => {
   const { data: categories, isLoading, isFetching } = useGetCategoriesQuery();
 
-  if (isLoading || isFetching) return <p>is loading</p>;
+  if (isLoading || isFetching) {
+    return (
+      <div className="space-y-4">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="h-10 w-full animate-pulse rounded bg-neutral-200" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -30,16 +38,29 @@ const RestaurantForm = ({ register, errors, control, setCategoryId }: Restaurant
         render={({ field }) => (
           <div className="space-y-2">
             <label className="text-sm font-medium">Category</label>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="">
+            <Select
+              onValueChange={(value) => {
+                field.onChange(value);
+                const matchedCategory = categories?.find((cat) => cat.name === value);
+                if (matchedCategory) {
+                  setCategoryId(matchedCategory._id);
+                }
+              }}
+              defaultValue={field.value}
+            >
+              <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {categories?.map((cat) => (
-                  <SelectItem value={cat.name} onClick={() => setCategoryId(cat._id)}>
-                    <p className="capitalize">{cat.name === 'healhy' ? 'healthy' : cat.name}</p>
-                  </SelectItem>
-                ))}
+                {categories?.length ? (
+                  categories.map((cat) => (
+                    <SelectItem key={cat._id} value={cat.name}>
+                      <p className="capitalize">{cat.name === 'healhy' ? 'healthy' : cat.name}</p>
+                    </SelectItem>
+                  ))
+                ) : (
+                  <p className="p-2 text-sm text-neutral-400">No categories found</p>
+                )}
               </SelectContent>
             </Select>
             {errors.categories && (

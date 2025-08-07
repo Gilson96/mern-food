@@ -80,7 +80,7 @@ const SearchRestaurantsDesktop = ({ listData, loading, setIsFiltered }: SearchRe
                       </Link>
                     ))}
                     {searchList(listData?.restaurants, inputValue)?.map((restaurant) => (
-                      <Link to={`restaurant/${restaurant._id}`}>
+                      <Link to={`/restaurant/${restaurant._id}`}>
                         <SearchRestaurantTabsContent
                           categoryId=""
                           setIsFiltered={setIsFiltered}

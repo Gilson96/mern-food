@@ -1,6 +1,6 @@
 import { useGetRestaurantQuery } from '@/features/restaurants/restaurantApi';
 import useScreenSize from '@/hooks/useScreenSize';
-import { useLocation, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import Navigator from '../navigator/navigator';
 import { useListTabsData } from '@/hooks/useListTabsData';
 import RestaurantHeroImage from './restaurantHeroImage';
@@ -9,21 +9,21 @@ import Reviews from './reviews';
 import Menu from './menu';
 
 const RestaurantPage = () => {
-  const { state } = useLocation();
   const { restaurantId } = useParams();
   const { data: restaurant, isLoading, isFetching } = useGetRestaurantQuery(restaurantId!);
-  const { listData, isLoading: ListIsLoading, isFetching: ListIsFetching } = useListTabsData(restaurantId);
+  const {
+    listData,
+    isLoading: ListIsLoading,
+    isFetching: ListIsFetching,
+  } = useListTabsData(restaurantId);
   const screenSize = useScreenSize();
-  const listDataLoading = ListIsFetching || ListIsLoading;
 
+  const listDataLoading = ListIsFetching || ListIsLoading;
+  const restaurantLoading = isFetching || isLoading;
 
   return (
     <main>
-      <Navigator
-        loading={listDataLoading}
-        listData={listData}
-        setIsFiltered={() => {}}
-      />
+      <Navigator loading={listDataLoading} listData={listData} setIsFiltered={() => {}} />
       <main className="flex h-full w-full flex-col items-center justify-center">
         {/* Hero image */}
         <RestaurantHeroImage
@@ -55,7 +55,7 @@ const RestaurantPage = () => {
         <p className="w-full p-[3%] pt-[5%] text-left text-xl font-bold lg:pt-0">Reviews</p>
         <Reviews restaurantId={restaurantId!} />
         <hr className="mt-[2%] h-[1px] w-full bg-neutral-100 lg:w-[94%]" />{' '}
-        <Menu restaurant={restaurant!} />
+        <Menu restaurant={restaurant!} restaurantLoading={restaurantLoading} />
       </main>
     </main>
   );

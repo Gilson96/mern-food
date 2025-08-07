@@ -24,33 +24,45 @@ const Navigator = ({ listData, setIsFiltered, loading }: NavigatorProps) => {
   const userRole = user.role;
   const foodsInTheBasket = useSelector((state: RootState) => state.cart.cart);
   const [open, setOpen] = useState(false);
+
   return (
     <main className="flex items-center justify-between p-[3%]">
+      {/*  logo and drawer */}
       <div
         onClick={() => setIsFiltered({ sortBy: 'All', price: 'Lowest' })}
         className="flex items-center gap-2"
       >
         <CustomDrawer />
-        <Link to={'/home'} className="text-xl">
+        <Link to="/home" className="text-xl">
           <span className="font-medium text-green-500">Mern</span>
           <span> Foods</span>
         </Link>
       </div>
+
+      {/*  address or loading skeleton */}
       <div className="flex w-auto items-center gap-1 rounded-full border border-black px-[2%] py-[0.5%]">
         <MapPin size={15} />
-        <p className="font-medium">{user?.address?.toUpperCase()}</p>
+        {loading ? (
+          <div className="h-4 w-24 animate-pulse rounded bg-neutral-300" />
+        ) : (
+          <p className="font-medium">{user?.address?.toUpperCase()}</p>
+        )}
       </div>
+
+      {/* desktop search bar */}
       {screenSize.width > 767 && (
         <SearchRestaurantsDesktop
           setIsFiltered={setIsFiltered}
-          listData={listData!}
+          listData={listData}
           loading={loading}
         />
       )}
+
+      {/* shopping cart */}
       <div className="flex items-center gap-3" onClick={() => setOpen(true)}>
         <div className="relative">
-          <ShoppingCartIcon className="h-6 w-6"  />
-          <div className='hidden'>
+          <ShoppingCartIcon className="h-6 w-6" />
+          <div className="hidden">
             <ShoppingCart open={open} setOpen={setOpen} />
           </div>
           {foodsInTheBasket.length > 0 && (
@@ -60,6 +72,7 @@ const Navigator = ({ listData, setIsFiltered, loading }: NavigatorProps) => {
           )}
         </div>
 
+        {/* login */}
         {userRole === 'guest' && (
           <Link to="/" className="flex items-center gap-3">
             <Button className="rounded-full">Login</Button>

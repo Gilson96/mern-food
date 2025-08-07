@@ -1,97 +1,27 @@
 import { Check, ImagePlus, X } from 'lucide-react';
-import React, { useRef, useState } from 'react';
-import axios from 'axios';
 import { Button } from '../ui/button';
-import { usePutUpdateFoodMutation, usePutUpdateRestaurantMutation } from '@/features/auth/authApi';
+import { useImageUploader } from '@/hooks/useImageUploader';
 
 type UploadImageProps = {
   restaurantId: string;
   foodId?: string;
-  imageUploadEntity: string;
+  imageUploadEntity: 'restaurant' | 'food';
 };
 
 const UploadImageToImageKit = ({ restaurantId, foodId, imageUploadEntity }: UploadImageProps) => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [tempImageUrl, setTempImageUrl] = useState(''); // image preview but not saved yet
-  const [savedImageUrl, setSavedImageUrl] = useState(''); // current saved image in backend
-  const [updateRestaurant] = usePutUpdateRestaurantMutation();
-  const [updateFood] = usePutUpdateFoodMutation();
-
-  const handleIconClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleRemove = () => {
-    setTempImageUrl(''); // clear temporary image
-  };
-
-  const handleConfirm = async () => {
-    if (!tempImageUrl) return;
-
-    try {
-      if (imageUploadEntity === 'restaurant') {
-        await updateRestaurant({
-          restaurantId,
-          body: { poster_image: tempImageUrl },
-        }).unwrap();
-      } else {
-        if (!foodId) {
-          console.error('Food ID is required to update food image');
-          return;
-        }
-        await updateFood({
-          restaurantId,
-          foodId,
-          body: { poster_image: tempImageUrl },
-        }).unwrap();
-      }
-      setSavedImageUrl(tempImageUrl);
-      setTempImageUrl('');
-    } catch (error) {
-      console.error('Failed to update restaurant image:', error);
-    }
-  };
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
-
-    try {
-      // Get ImageKit auth from backend
-      const { data: auth } = await axios.get(
-        'https://react-food-api-03d094431a6b.herokuapp.com/imagekit-auth',
-      );
-
-      // Prepare upload to ImageKit
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('fileName', file.name);
-      formData.append('publicKey', import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY);
-      formData.append('signature', auth.signature);
-      formData.append('expire', auth.expire);
-      formData.append('token', auth.token);
-
-      // Upload to ImageKit
-      const uploadRes = await axios.post(
-        'https://upload.imagekit.io/api/v1/files/upload',
-        formData,
-      );
-
-      // Set preview image (not yet saved to backend)
-      setTempImageUrl(uploadRes.data.url);
-    } catch (error) {
-      console.error('Upload to ImageKit failed:', error);
-    } finally {
-      setUploading(false);
-    }
-  };
+  const {
+    fileInputRef,
+    uploading,
+    tempImageUrl,
+    savedImageUrl,
+    handleFileChange,
+    handleConfirm,
+    handleRemove,
+    handleIconClick,
+  } = useImageUploader({ restaurantId, foodId, imageUploadEntity });
 
   return (
     <div>
-      {/* If no image is uploaded yet */}
       {!tempImageUrl && !savedImageUrl && (
         <button
           type="button"
@@ -109,7 +39,6 @@ const UploadImageToImageKit = ({ restaurantId, foodId, imageUploadEntity }: Uplo
         </button>
       )}
 
-      {/* Preview new image (before save) */}
       {tempImageUrl && (
         <div className="mt-4 flex gap-2">
           <img
@@ -140,7 +69,6 @@ const UploadImageToImageKit = ({ restaurantId, foodId, imageUploadEntity }: Uplo
         </div>
       )}
 
-      {/* Show saved image */}
       {!tempImageUrl && savedImageUrl && (
         <div className="mt-4 flex gap-2">
           <img
@@ -160,7 +88,6 @@ const UploadImageToImageKit = ({ restaurantId, foodId, imageUploadEntity }: Uplo
         </div>
       )}
 
-      {/* Hidden file input */}
       <input
         type="file"
         accept="image/*"

@@ -1,15 +1,11 @@
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Loader2Icon, Plus } from 'lucide-react';
 import { z } from 'zod';
 import { usePostCreateFoodMutation } from '@/features/auth/authApi';
 import { foodFormSchema } from '@/hooks/useFormRestaurant';
-
 import { useAddEntityForm } from '@/hooks/useAddToRestaurant';
 import FoodForm from './foodForm';
-import { SerializedError } from '@reduxjs/toolkit';
-import { Food } from '@/hooks/dataTypes';
 
 type FormData = z.infer<typeof foodFormSchema>;
 type AddFoodProps = {
@@ -43,7 +39,7 @@ const AddFood = ({ restaurantId }: AddFoodProps) => {
   return (
     <Dialog open={open} onOpenChange={(isOpen) => setOpen(isOpen)}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="lg" className="mb-[5%]">
+        <Button variant="outline" size="lg" className="w-auto lg:mr-[3%]">
           <Plus />
           <p>Add food</p>
         </Button>

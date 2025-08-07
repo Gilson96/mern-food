@@ -7,6 +7,7 @@ import { RootState } from '@/store';
 import { useSelector } from 'react-redux';
 import Payement from './payement';
 import { useNavigate } from 'react-router-dom';
+import CheckoutSkeleton from '../skeletons/CheckoutSkeleton';
 
 const Checkout = () => {
   const user = useAuth();
@@ -15,80 +16,99 @@ const Checkout = () => {
   const totalPrice = useSelector(foodsTotalPrice);
   const navigate = useNavigate();
 
-  if (isLoading || isFetching) return <p>is Loading</p>;
-
   const restaurantIdsInBasket = foodsInTheBasket.map((entry) => entry.restaurant);
-
   const findRestaurant = restaurants?.filter((res) => restaurantIdsInBasket.includes(res._id));
   const deliveryFee = useSelector((state: RootState) => deliveryFeeTotal(state, findRestaurant));
 
   return (
-    <section className="flex min-h-screen w-full flex-col bg-neutral-200">
-      <div
-        onClick={() => navigate(-1)}
-        className="flex h-[4rem] items-center justify-start gap-1 bg-white px-[3%]"
-      >
-        <ArrowBigLeft />
-        <p>Back to store</p>
-      </div>
-      <div className="flex h-full w-full flex-col items-center justify-center p-[3%] md:flex-row md:justify-between">
-        <div className="flex h-full w-full flex-col gap-2 md:w-[50%]">
-          <div className="flex h-[10rem] w-full flex-col justify-center gap-3 rounded-lg bg-white p-[2%]">
-            <p className="text-xl font-medium">Delivery details</p>
-            <div className="flex items-center justify-start gap-2">
-              <ShoppingBag size={30} />
-              <p>{user?.address?.toUpperCase()}</p>
-            </div>
+    <>
+      {isLoading || isFetching ? (
+        <CheckoutSkeleton />
+      ) : (
+        <section className="min-h-screen w-full bg-neutral-200">
+          {/* Back Nav */}
+          <div
+            onClick={() => navigate(-1)}
+            className="flex h-[4rem] cursor-pointer items-center gap-2 bg-white px-[5%] text-sm text-neutral-700 shadow-sm"
+          >
+            <ArrowBigLeft size={20} />
+            <p>Back to store</p>
           </div>
-          <span className="max-md:hidden">
-            <Payement totalPrice={totalPrice + deliveryFee} foodsInTheBasket={foodsInTheBasket} />
-          </span>
-        </div>
 
-        <div className="flex w-full flex-col gap-3 md:w-[40%]">
-          <div className="max-h-[12rem] overflow-hidden overflow-y-auto rounded-lg bg-white p-[2%] max-md:mt-[2%] lg:max-h-[15rem]">
-            {findRestaurant?.map((restaurant) => {
-              const matchingEntry = foodsInTheBasket.find(
-                (entry) => entry.restaurant === restaurant._id,
-              );
-              const findRestaurantFoods = matchingEntry?.foods || [];
-              return (
-                <div
-                  key={restaurant._id}
-                  className="flex w-full cursor-pointer items-center justify-start gap-3 py-[2%] hover:bg-neutral-100"
-                >
-                  <ShoppingCartAccordion
-                    findRestaurantFoods={findRestaurantFoods}
-                    restaurant={restaurant}
-                  />
+          {/* Main Checkout Layout */}
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-[5%] py-[3%] md:flex-row md:items-start">
+            {/* Left Side - Delivery & Payment */}
+            <div className="flex w-full flex-col gap-6 md:w-1/2">
+              {/* Delivery Box */}
+              <div className="rounded-lg bg-white p-5 shadow-sm">
+                <p className="mb-3 text-lg font-semibold">Delivery details</p>
+                <div className="flex items-center gap-2 text-sm">
+                  <ShoppingBag size={20} />
+                  <p className="text-neutral-700">{user?.address?.toUpperCase()}</p>
                 </div>
-              );
-            })}
-          </div>
-          <div className="flex h-auto flex-col justify-between rounded-lg bg-white p-[3%]">
-            <p className="py-[2%] text-2xl font-medium">Order Total</p>
-            <div className="flex flex-col">
-              <div className="flex items-center justify-between text-neutral-600">
-                <p>Subtotal</p>
-                <p>£{totalPrice}</p>
               </div>
-              <div className="flex items-center justify-between text-neutral-600">
-                <p>Delivery fee</p>
-                <p>£{deliveryFee}</p>
+
+              {/* Payment for large screens */}
+              <div className="hidden md:block">
+                <Payement
+                  totalPrice={totalPrice + deliveryFee}
+                  foodsInTheBasket={foodsInTheBasket}
+                />
               </div>
-              <hr className="my-[2%] h-[1px] w-full bg-neutral-100" />
-              <div className="flex items-center justify-between text-xl">
-                <p className="font-medium">Total</p>
-                <p className="font-medium">£{Number(totalPrice + deliveryFee).toFixed(2)}</p>
+            </div>
+
+            {/* Right Side - Order Summary */}
+            <div className="flex w-full flex-col gap-6 md:w-1/2">
+              {/* Cart Items */}
+              <div className="max-h-[18rem] overflow-y-auto rounded-lg bg-white p-5 shadow-sm">
+                {findRestaurant?.map((restaurant) => {
+                  const matchingEntry = foodsInTheBasket.find(
+                    (entry) => entry.restaurant === restaurant._id,
+                  );
+                  const findRestaurantFoods = matchingEntry?.foods || [];
+                  return (
+                    <div key={restaurant._id} className="py-2">
+                      <ShoppingCartAccordion
+                        findRestaurantFoods={findRestaurantFoods}
+                        restaurant={restaurant}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Order Total */}
+              <div className="rounded-lg bg-white p-5 shadow-sm">
+                <p className="mb-4 text-lg font-semibold">Order Total</p>
+                <div className="space-y-2 text-sm text-neutral-600">
+                  <div className="flex justify-between">
+                    <span>Subtotal</span>
+                    <span>£{totalPrice.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Delivery fee</span>
+                    <span>£{deliveryFee.toFixed(2)}</span>
+                  </div>
+                  <hr className="my-2 border-neutral-200" />
+                  <div className="flex justify-between text-base font-medium text-black">
+                    <span>Total</span>
+                    <span>£{(totalPrice + deliveryFee).toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment for mobile only */}
+              <div className="block md:hidden">
+                <Payement
+                  totalPrice={totalPrice + deliveryFee}
+                  foodsInTheBasket={foodsInTheBasket}
+                />
               </div>
             </div>
           </div>
-          <span className="md:hidden">
-            <Payement totalPrice={totalPrice + deliveryFee} foodsInTheBasket={foodsInTheBasket} />
-          </span>
-        </div>
-      </div>
-    </section>
+        </section>
+      )}
+    </>
   );
 };
 

@@ -9,15 +9,41 @@ import UploadImageToImageKit from '../profile/uploadImageToImageKit';
 type FoodProps = {
   restaurant: Meal;
   food: FoodType;
+  restaurantLoading: boolean;
+  foodLoading: boolean;
 };
 
-const Food = ({ restaurant, food }: FoodProps) => {
+const Food = ({ restaurant, food, restaurantLoading, foodLoading }: FoodProps) => {
   const foodsInTheBasket = useSelector((state: RootState) => state.cart.cart);
+
   const foodSelected = foodsInTheBasket
     .flatMap((entry) => entry.foods)
     .find((item) => item._id === food._id);
+
   const foodsQuantity = foodSelected?.quantity ?? 0;
   const screenSize = useScreenSize();
+
+  if (restaurantLoading || foodLoading) {
+    return (
+      <div className="flex w-full animate-pulse flex-col gap-2 py-[2%]">
+        <div className="flex w-full items-center justify-between lg:border-b lg:pb-2">
+          <div className="flex flex-col gap-2">
+            <div className="h-4 w-24 rounded bg-neutral-300" />
+            <div className="h-4 w-16 rounded bg-neutral-200" />
+          </div>
+          <div
+            className="rounded bg-neutral-300"
+            style={{
+              height: screenSize.width >= 768 ? '8rem' : '6rem',
+              width: screenSize.width >= 768 ? '12rem' : '8rem',
+            }}
+          />
+        </div>
+        <hr className="my-[3%] h-[1px] w-full bg-neutral-100 md:hidden" />
+      </div>
+    );
+  }
+
   return (
     <Dialog>
       <DialogTrigger className="flex w-full cursor-pointer flex-col py-[1%] hover:bg-neutral-100">
@@ -46,7 +72,7 @@ const Food = ({ restaurant, food }: FoodProps) => {
       </DialogTrigger>
       <hr className="my-[3%] h-[1px] w-full bg-neutral-100 md:hidden" />
       <DialogContent>
-        <FoodSelected food={food} foodsQuantity={foodsQuantity} screenSize={screenSize} />
+        <FoodSelected food={food} foodLoading={foodLoading} foodsQuantity={foodsQuantity} screenSize={screenSize} />
       </DialogContent>
     </Dialog>
   );

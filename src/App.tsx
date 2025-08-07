@@ -7,6 +7,8 @@ import GuestAddressPage from './components/home/guestAddressPage';
 import RestaurantPage from './components/restaurant/restaurantPage';
 import CheckoutPage from './components/checkout/checkout';
 import ProfilePage from './components/profile/profilePage';
+import NotFound from './components/notFound';
+import Footer from './components/Footer';
 
 function App() {
   const { role } = useAuth();
@@ -27,8 +29,9 @@ function App() {
           {/* User-only */}
           {role !== 'guest' && <Route path="/profile" element={<ProfilePage />} />}
           {/* Catch-all */}
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
+      <Footer />
       </Router>
     </>
   );

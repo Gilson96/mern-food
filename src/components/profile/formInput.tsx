@@ -37,6 +37,7 @@ export const FormInput = ({
             <Input
               {...rest}
               type="file"
+              autoComplete="off"
               onChange={(e) => field.onChange(e.target.files?.[0])}
               placeholder={placeholder}
               className="max-md:w-[80%]"
@@ -48,6 +49,7 @@ export const FormInput = ({
           {...(register && register(name, type === 'number' ? { valueAsNumber: true } : {}))}
           {...rest}
           type={type}
+          autoComplete="off"
           placeholder={placeholder}
           className="max-md:w-[80%]"
         />

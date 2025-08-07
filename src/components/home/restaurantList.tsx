@@ -4,17 +4,31 @@ import { Heart, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useFavorites } from '@/hooks/useFavorites';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { HomePageProps } from './homePage';
 
 type RestaurantListProps = {
   restaurant: Meal;
-  setIsFiltered: React.Dispatch<React.SetStateAction<HomePageProps>>;
+  loading?: boolean;
 };
 
-const RestaurantList = ({ restaurant, setIsFiltered }: RestaurantListProps) => {
+const RestaurantList = ({ restaurant, loading }: RestaurantListProps) => {
   const user = useAuth();
   const userRole = user.role;
   const { toggleFavorite, isFavorite, isLoading } = useFavorites();
+
+  if (loading) {
+    return (
+      <section>
+        <div className="flex animate-pulse flex-col gap-2">
+          <div className="h-[10rem] w-[9rem] rounded-2xl bg-neutral-200 md:w-[15rem]" />
+          <div className="h-4 w-3/4 rounded bg-neutral-300" />
+          <div className="flex items-center gap-2">
+            <div className="h-3 w-10 rounded bg-neutral-200" />
+            <div className="h-3 w-16 rounded bg-neutral-200" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section>
@@ -22,12 +36,12 @@ const RestaurantList = ({ restaurant, setIsFiltered }: RestaurantListProps) => {
         <Link to={`/restaurant/${restaurant._id}`}>
           <div
             style={{ backgroundImage: `url(${restaurant.poster_image})` }}
-            className="h-[10rem] w-[15rem] rounded-2xl bg-cover bg-center bg-no-repeat"
-          ></div>
+            className="h-[10rem] w-full rounded-2xl bg-cover bg-center bg-no-repeat md:w-[15rem]"
+          />
         </Link>
         <div className="flex flex-col">
           <div className="flex w-full items-center justify-between">
-            <p className="text-lg font-medium">{restaurant.name}</p>
+            <p className="text-sm font-medium md:text-lg">{restaurant.name}</p>
             {userRole === 'guest' ? (
               <Popover>
                 <PopoverTrigger>
@@ -38,7 +52,7 @@ const RestaurantList = ({ restaurant, setIsFiltered }: RestaurantListProps) => {
                 </PopoverContent>
               </Popover>
             ) : (
-              <button onClick={() => toggleFavorite(restaurant)} disabled={isLoading}>
+              <button className='cursor-pointer' onClick={() => toggleFavorite(restaurant)} disabled={isLoading}>
                 {isFavorite(restaurant._id) ? (
                   <Heart size={20} fill="black" />
                 ) : (
@@ -49,7 +63,9 @@ const RestaurantList = ({ restaurant, setIsFiltered }: RestaurantListProps) => {
           </div>
           <div className="flex items-center gap-0.5 pb-[5%]">
             <div className="flex items-center">
-              <p>{Number(restaurant.rating).toFixed(2)}</p>
+              <p>
+                {restaurant.rating === undefined ? 'N/A' : Number(restaurant.rating).toFixed(2)}
+              </p>
               <Star size={15} fill="black" />
             </div>
             <div className="flex items-center gap-0.5">

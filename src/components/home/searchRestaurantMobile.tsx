@@ -1,5 +1,5 @@
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { ArrowLeft, Search, XIcon } from 'lucide-react';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { ArrowLeft, Search } from 'lucide-react';
 import { Input } from '../ui/input';
 import SearchRestaurantTabs from './searchRestaurantTabs';
 import { useState } from 'react';
@@ -42,6 +42,7 @@ const SearchRestaurantMobile = ({ listData, loading, setIsFiltered }: SearchRest
               id="address"
               name="address"
               type="text"
+              autoComplete="off"
               onChange={handleSearchInput}
               value={inputValue}
               placeholder="Search Mern Foods"

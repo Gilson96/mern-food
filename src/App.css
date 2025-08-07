@@ -125,11 +125,14 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   appearance: auto;
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+/* Optional: Custom thin scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
 }
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #e5e7eb; /* tailwind: neutral-200 */
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #737373 ; /* tailwind: green-500 */
+  border-radius: 9999px;
 }

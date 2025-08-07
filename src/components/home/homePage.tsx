@@ -54,23 +54,25 @@ const HomePage = () => {
         )}
 
         {/* categories & filters */}
-        <div className="md:flex md:items-center md:justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <Categories
             loading={loading}
             categories={listData?.categories!}
             setIsFiltered={setIsFiltered}
           />
-          {screenSize.width > 767 && (
+          <div className='w-full place-items-end my-[0.5rem]'>
             <Filters setIsFiltered={setIsFiltered} isFiltered={isFiltered} />
-          )}
+          </div>
         </div>
-        <hr className="mt-[2rem] h-[1px] bg-neutral-100" />
+        <hr className="my-[1rem] h-[1px] bg-neutral-100" />
+
         {/* restaurantList */}
         <div className="flex">
           {(isFiltered.category && isFiltered.category !== 'All') ||
           (isFiltered.sortBy && isFiltered.sortBy !== 'All') ? (
             <FilteredRestaurant
               isFiltered={isFiltered}
+              loading={loading}
               listData={listData}
               setIsFiltered={setIsFiltered}
               title={listData.categories?.find((cat) => cat._id === isFiltered.category)?.name!}
@@ -81,16 +83,19 @@ const HomePage = () => {
                 setIsFiltered={setIsFiltered}
                 feature={highestRatedRestaurant}
                 title="Highest rated"
+                loading={loading}
               />
               <FeaturedRestaurant
                 setIsFiltered={setIsFiltered}
                 feature={fastestRestaurant}
                 title="In a rush"
+                loading={loading}
               />
               <FeaturedRestaurant
                 setIsFiltered={setIsFiltered}
                 feature={lowCostFeeRestaurant}
                 title="Low cost delivery"
+                loading={loading}
               />
             </div>
           )}

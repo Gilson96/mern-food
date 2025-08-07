@@ -1,4 +1,4 @@
-import { Food, LoginRequest, Meal, PaymentIntent, User, UserResponse } from '@/hooks/dataTypes';
+import { Food, LoginRequest, PaymentIntent, User, UserResponse } from '@/hooks/dataTypes';
 import { indexApi } from '../indexApi';
 
 const auth = indexApi.injectEndpoints({

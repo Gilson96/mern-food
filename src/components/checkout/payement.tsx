@@ -1,5 +1,5 @@
 import { usePostPayementIntentMutation } from '@/features/auth/authApi';
-import { Meal, PaymentIntent } from '@/hooks/dataTypes';
+import { PaymentIntent } from '@/hooks/dataTypes';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
@@ -18,7 +18,7 @@ type CheckoutModelFooterProps = {
 };
 
 const Payement = ({ totalPrice, foodsInTheBasket }: CheckoutModelFooterProps) => {
-  const [payementIntent, { isLoading }] = usePostPayementIntentMutation();
+  const [payementIntent] = usePostPayementIntentMutation();
   const [clientSecret, setClientSecret] = useState<PaymentIntent>();
 
   const castString = String(totalPrice);

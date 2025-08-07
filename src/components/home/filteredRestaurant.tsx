@@ -8,10 +8,12 @@ type FilteredRestaurantProps = {
   setIsFiltered: React.Dispatch<React.SetStateAction<HomePageProps>>;
   isFiltered: HomePageProps;
   listData: ListData;
+  loading: boolean;
 };
 
 const FilteredRestaurant = ({
   listData,
+  loading,
   title,
   setIsFiltered,
   isFiltered,
@@ -54,11 +56,11 @@ const FilteredRestaurant = ({
   );
 
   return (
-    <div className="w-[90%]">
+    <div className="w-full">
       <p className="py-[2%] text-xl font-medium capitalize">{title}</p>
-      <div className="max-md:w-full max-md:place-items-center md:grid md:w-[85%] md:grid-cols-2 md:gap-[5rem] lg:grid-cols-4 lg:w-[100%]">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-[5rem]">
         {filteredRestaurants.map((res) => (
-          <RestaurantList setIsFiltered={setIsFiltered} restaurant={res} />
+          <RestaurantList key={res._id} restaurant={res} loading={loading} />
         ))}
       </div>
     </div>

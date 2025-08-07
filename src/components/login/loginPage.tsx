@@ -21,7 +21,6 @@ const LoginPage = () => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    console.log(email);
     try {
       const userLogin = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...userLogin }));
@@ -36,8 +35,8 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="flex h-screen w-screen items-center justify-center">
-      <Card className="w-[80%] sm:w-full sm:max-w-sm">
+    <main className="flex h-full w-full items-center justify-center">
+      <Card className="w-[80%] sm:w-full sm:max-w-sm mt-[3rem]">
         <CardHeader className="flex items-center justify-center">
           <CardTitle className="flex items-center gap-1">
             <Utensils color="oklch(72.3% 0.219 149.579)" />

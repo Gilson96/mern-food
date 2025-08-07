@@ -4,13 +4,12 @@ import { useListTabsData } from '@/hooks/useListTabsData';
 import { UserCircle2 } from 'lucide-react';
 import { useAuth } from '@/features/auth/useAuth';
 import { useGetUserQuery } from '@/features/auth/authApi';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useFavorites } from '@/hooks/useFavorites';
 import Favorites from './favorites';
 import Orders from './orders';
 import AddRestaurant from './addRestaurant';
 import OwnedRestaurant from './ownedRestaurant';
-import { useEffect } from 'react';
 
 type ProfilePageProps = {
   state: { tabChoice: string };
@@ -27,11 +26,13 @@ const ProfilePage = () => {
   const { state }: ProfilePageProps = useLocation();
   const findUser = userDetails?.find((u) => u.role === user.role);
   const { toggleFavorite } = useFavorites();
-  const loading = listDataLoading || listDataFecthing;
+
+  const listLoading = listDataLoading || listDataFecthing;
+  const userLoading = isLoading || isFetching;
 
   return (
     <div>
-      <Navigator loading={loading} listData={listData} setIsFiltered={() => {}} />
+      <Navigator loading={listLoading} listData={listData} setIsFiltered={() => {}} />
       <div className="flex h-[8rem] items-center justify-start gap-2 border-b bg-neutral-100 p-[3%]">
         <UserCircle2 color="oklch(72.3% 0.219 149.579)" size={80} />
         <p className="text-2xl capitalize">{user.role}</p>
@@ -57,14 +58,25 @@ const ProfilePage = () => {
             )}
           </div>
           <TabsContent value="favorites">
-            <Favorites findUser={findUser!} listData={listData} toggleFavorite={toggleFavorite} />
+            <Favorites
+              listLoading={listLoading}
+              userLoading={userLoading}
+              findUser={findUser!}
+              listData={listData}
+              toggleFavorite={toggleFavorite}
+            />
           </TabsContent>
           <TabsContent value="orders">
-            <Orders findUser={findUser} />
+            <Orders findUser={findUser} userLoading={userLoading}/>
           </TabsContent>
           {user.role === 'admin' && (
             <TabsContent value="owned">
-              <OwnedRestaurant findUser={findUser!} listData={listData!} />
+              <OwnedRestaurant
+                listLoading={listLoading}
+                findUser={findUser!}
+                listData={listData!}
+                userLoading={userLoading}
+              />
             </TabsContent>
           )}
         </Tabs>
