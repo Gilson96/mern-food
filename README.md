@@ -6,7 +6,7 @@ Admins can manage restaurants, foods, and view customer activity.
 
 ---
 
-🚀 **Live Demo**: [https://gilson96.github.io/mern-foods](https://gilson96.github.io/mern-food)  
+🚀 **Live Demo**: [https://gilson96.github.io/mern-foods](https://mernfoods.netlify.app/)  
 🔌 **Backend API**: [https://github.com/Gilson96/react-foods_api](https://github.com/Gilson96/react-foods_api)
 
 ---
