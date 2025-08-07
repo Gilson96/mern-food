@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/mern-food/',
+  base: 'https://gilson96.github.io/mern-food/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
