@@ -21,15 +21,14 @@ const ReviewForm = ({ control, register, errors }: ReviewFormProps) => {
         error={errors.name}
       />
 
-      <label className="block text-sm font-medium">Description</label>
-      <Textarea
-        {...register("description")}
-        placeholder="Write your review..."
-        rows={4}
+       <FormInput
+        control={control}
+        label="Description"
+        register={register}
+        name="description"
+        placeholder="e.g. It was delicious! Highly recommend."
+        error={errors.description}
       />
-      {errors.description && (
-        <p className="text-sm text-red-500">{errors.description.message}</p>
-      )}
 
       <FormInput
         control={control}

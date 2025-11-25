@@ -26,7 +26,9 @@ export const reviewFormSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters.'),
   description: z.string().min(5),
   rating: z.number().max(5).min(0),
-
+  date: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    message: 'Invalid date format',
+  }),
 });
 
 export const restaurantFormSchema = z.object({

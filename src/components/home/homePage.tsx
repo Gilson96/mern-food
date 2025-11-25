@@ -55,11 +55,11 @@ const HomePage = () => {
 
         {/* categories & filters */}
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <Categories
+          {/* <Categories
             loading={loading}
             categories={listData?.categories!}
             setIsFiltered={setIsFiltered}
-          />
+          /> */}
           <div className='w-full place-items-end my-[0.5rem]'>
             <Filters setIsFiltered={setIsFiltered} isFiltered={isFiltered} />
           </div>

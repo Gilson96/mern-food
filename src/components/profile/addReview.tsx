@@ -26,6 +26,7 @@ const AddReview = ({ restaurantId }: AddReviewProps) => {
       name: '',
       description: '',
       rating: 0,
+      date: undefined,
     },
     openStateValue: 'addReview',
     createMutation: usePostCreateReviewMutation,

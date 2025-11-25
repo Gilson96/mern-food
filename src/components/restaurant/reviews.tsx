@@ -23,6 +23,7 @@ const Reviews = ({ restaurantId }: ReviewsProps) => {
 
   const isSingleReview = reviews?.ratings_and_reviews?.length === 1;
 
+  console.log(reviews?.ratings_and_reviews);
   return (
     <>
       <Carousel
