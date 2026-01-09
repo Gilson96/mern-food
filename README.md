@@ -1,4 +1,4 @@
-# MERN Food Ordering App (TypeScript + Redux + TailwindCSS + Stripe)
+# MERN Food
 
 A **full‑stack food ordering platform** built with **React, Redux Toolkit Query, TypeScript, Node.js, Express, MongoDB**, and **Stripe** for secure payments.  
 Users can browse restaurants, order food, leave reviews, and pay online.  
