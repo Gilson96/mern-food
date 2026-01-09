@@ -52,7 +52,6 @@ Admins can manage restaurants, foods, and view customer activity.
 
 ### 🏠 Homepage with Search & Filters  
 ![Homepage](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/homePage.png?raw=true)
-![Search & Filters]([https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/search.png?raw=true](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/navigator.png?raw=true))
 
 ---
 
