@@ -81,20 +81,6 @@ JWT_SECRET=your_jwt_secret
 STRIPE_SECRET_KEY=your_stripe_secret
 ```
 
-## 📌 Project Highlights
-
-- Full authentication & role‑based access (user/admin)
-
-- End‑to‑end ordering & checkout system
-
-- Stripe payment integration with test mode
-
-- Responsive & accessible design
-
-- Production‑ready backend with image uploads & validation
-
-- Optimised for performance with lazy loading and RTK Query caching
-
 ---
 
 🤝 Contact
