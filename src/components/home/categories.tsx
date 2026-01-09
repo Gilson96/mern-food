@@ -27,7 +27,7 @@ const Categories = ({ categories, setIsFiltered, loading }: CategoriesProps) => 
                 className="h-[3rem] w-[3rem] animate-pulse rounded-full bg-neutral-300 md:h-9 md:w-28"
               />
             ))
-          : categories.map((category) => (
+          : categories?.map((category) => (
               <div
                 key={category._id}
                 className="cursor-pointer md:flex md:items-center md:gap-1 md:rounded-full md:border md:border-black md:px-[10px] md:py-[6px] md:hover:bg-green-100"

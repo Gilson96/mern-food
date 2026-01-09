@@ -59,7 +59,7 @@ const FilteredRestaurant = ({
     <div className="w-full">
       <p className="py-[2%] text-xl font-medium capitalize">{title}</p>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-[5rem]">
-        {filteredRestaurants.map((res) => (
+        {filteredRestaurants?.map((res) => (
           <RestaurantList key={res._id} restaurant={res} loading={loading} />
         ))}
       </div>
