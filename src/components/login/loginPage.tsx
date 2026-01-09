@@ -11,7 +11,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
 
   return (
-    <main className="flex h-full w-full items-center justify-center">
+    <main className="flex md:h-[68vh] w-full items-center justify-center">
       <Card className="mt-[3rem] w-[80%] sm:w-full sm:max-w-sm">
         <CardHeader className="flex items-center justify-center">
           <CardTitle className="flex items-center gap-1">
