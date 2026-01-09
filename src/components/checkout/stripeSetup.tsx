@@ -1,14 +1,14 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetUserQuery, usePostToOrdersMutation } from '@/features/auth/authApi';
 import { toast } from 'sonner';
 import { emptyCart, RestaurantCart } from '@/features/cart/cartSlice';
 import { Button } from '../ui/button';
-import { useAuth } from '@/features/auth/useAuth';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { RootState } from '@/store';
 
 type StripeSetupProps = {
   foodsInTheBasket: RestaurantCart[];
@@ -16,7 +16,7 @@ type StripeSetupProps = {
 };
 
 const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
-  const user = useAuth();
+  const role = useSelector((state: RootState) => state.auth.role);
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
 
   const allFoods = foodsInTheBasket.flatMap((entry) => entry.foods);
 
-  const findUserId = userId?.find((u) => u.role === user.role)?._id;
+  const findUserId = userId?.find((u) => u.role === role)?._id;
 
   if (userLoading) {
     return (
@@ -48,7 +48,7 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
       console.error(result.error.message);
       toast('An error occurred', { position: 'top-center' });
     } else {
-      if (user.role !== 'guest') {
+      if (role !== 'guest') {
         await addToOrders({
           _id: findUserId!,
           body: {
@@ -62,7 +62,7 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
       setShowSuccess(true);
       setTimeout(() => {
         dispatch(emptyCart());
-        navigate('/home');
+        navigate('/');
       }, 2500);
     }
   };

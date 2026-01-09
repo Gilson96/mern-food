@@ -40,6 +40,8 @@ const HomePage = () => {
     (restaurant) => parseFloat(restaurant.deliveryFee) < 5,
   );
   const fastestRestaurant = listData?.restaurants?.filter((restaurant) => restaurant.arrival < 29);
+
+  console.log(listData);
   return (
     <>
       <Navigator loading={loading} setIsFiltered={setIsFiltered} listData={listData} />
@@ -53,20 +55,20 @@ const HomePage = () => {
           />
         )}
 
-        {/* categories & filters */}
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          {/* <Categories
+          <Categories
             loading={loading}
             categories={listData?.categories!}
             setIsFiltered={setIsFiltered}
-          /> */}
-          <div className='w-full place-items-end my-[0.5rem]'>
-            <Filters setIsFiltered={setIsFiltered} isFiltered={isFiltered} />
-          </div>
+          />
+          {isFiltered.category && isFiltered.category !== 'All' && (
+            <div className="my-[0.5rem] w-full place-items-end">
+              <Filters setIsFiltered={setIsFiltered} isFiltered={isFiltered} />
+            </div>
+          )}
         </div>
         <hr className="my-[1rem] h-[1px] bg-neutral-100" />
 
-        {/* restaurantList */}
         <div className="flex">
           {(isFiltered.category && isFiltered.category !== 'All') ||
           (isFiltered.sortBy && isFiltered.sortBy !== 'All') ? (

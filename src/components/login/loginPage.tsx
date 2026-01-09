@@ -1,42 +1,18 @@
-import { Label } from '@radix-ui/react-label';
 import { Button } from '../ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '../ui/card';
-import { Input } from '../ui/input';
-import { LoaderCircle, Utensils } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
+import { Loader2Icon, Utensils } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useLoginMutation } from '@/features/auth/authApi';
-import { toast } from 'sonner';
-import { setCredentials } from '@/features/auth/authSlice';
+import { setLogin } from '@/features/auth/authSlice';
+import { useGetUserQuery } from '@/features/auth/authApi';
 
 const LoginPage = () => {
+  const { data: userDetails, isLoading, isFetching, refetch } = useGetUserQuery();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [login, { isLoading }] = useLoginMutation();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-
-    try {
-      const userLogin = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...userLogin }));
-      navigate('/home');
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      toast('Invalid credentials. Please try again', {
-        position: 'bottom-center',
-        style: { backgroundColor: 'red', color: 'white' },
-      });
-    }
-  };
 
   return (
     <main className="flex h-full w-full items-center justify-center">
-      <Card className="w-[80%] sm:w-full sm:max-w-sm mt-[3rem]">
+      <Card className="mt-[3rem] w-[80%] sm:w-full sm:max-w-sm">
         <CardHeader className="flex items-center justify-center">
           <CardTitle className="flex items-center gap-1">
             <Utensils color="oklch(72.3% 0.219 149.579)" />
@@ -47,31 +23,50 @@ const LoginPage = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="w-full">
-          <form onSubmit={handleSubmit} className="flex w-full flex-col gap-6">
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" placeholder="m@example.com" />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input id="password" name="password" type="password" placeholder='abc123' />
-              </div>
-            </div>
-            <div className="flex w-full flex-col gap-2">
-              <button
-                type="submit"
-                className={`flex w-full cursor-pointer items-center justify-center rounded-md border px-4 py-2 font-medium text-white shadow ${isLoading ? 'bg-neutral-300' : 'bg-green-500 hover:bg-green-600'} `}
-              >
-                {isLoading ? <LoaderCircle color="white" className="animate-spin" /> : 'Login'}
-              </button>
-              <Button asChild variant="outline" className="w-full cursor-pointer">
-                <Link to={'/guestAddress'}>Continue as a guest</Link>
-              </Button>
-            </div>
-          </form>
+          <div className="flex w-full flex-col gap-2">
+            <Button
+              onClick={() => {
+                dispatch(setLogin({ role: 'guest' }));
+              }}
+              asChild
+              variant="outline"
+              className="w-full cursor-pointer"
+            >
+              <Link to={'/'}>Continue as a guest</Link>
+            </Button>
+            <Button
+              onClick={() => {
+                dispatch(setLogin({ role: 'user', user_id: userDetails?.[1]._id }));
+              }}
+              asChild
+              variant="outline"
+              className="w-full cursor-pointer bg-green-500 text-white"
+            >
+              <Link to={'/'}>
+                {isLoading || isFetching ? (
+                  <Loader2Icon className="animate animate-spin text-white" />
+                ) : (
+                  'Login as a user'
+                )}{' '}
+              </Link>
+            </Button>
+            <Button
+              onClick={() => {
+                dispatch(setLogin({ role: 'admin', user_id: userDetails?.[0]._id }));
+              }}
+              asChild
+              variant="outline"
+              className="w-full cursor-pointer bg-black text-white"
+            >
+              <Link to={'/'}>
+                {isLoading || isFetching ? (
+                  <Loader2Icon className="animate animate-spin text-white" />
+                ) : (
+                  'Login as an Admin'
+                )}{' '}
+              </Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </main>

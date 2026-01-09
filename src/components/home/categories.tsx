@@ -17,8 +17,6 @@ const Categories = ({ categories, setIsFiltered, loading }: CategoriesProps) => 
   const screenSize = useScreenSize();
   const mobileView = screenSize.width < 767;
 
-  console.log(categories);
-
   return (
     <section>
       <div className="flex w-full max-md:justify-between max-md:px-[1%] max-md:pt-[5%] md:flex md:justify-around md:gap-3 lg:gap-5">

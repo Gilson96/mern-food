@@ -1,6 +1,6 @@
 import { useGetRestaurantQuery } from '@/features/restaurants/restaurantApi';
 import useScreenSize from '@/hooks/useScreenSize';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Navigator from '../navigator/navigator';
 import { useListTabsData } from '@/hooks/useListTabsData';
 import RestaurantHeroImage from './restaurantHeroImage';

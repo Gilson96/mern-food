@@ -7,6 +7,12 @@ import { loadStripe } from '@stripe/stripe-js';
 import StripeSetup from './stripeSetup';
 import { Button } from '../ui/button';
 import { RestaurantCart } from '@/features/cart/cartSlice';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 const stripePromise = loadStripe(
   'pk_test_51RM9WqQc9p8NGwhTGXbjwQ5KMsekxrYc5yD1H0GK56gnIt36JQ7tVEcTh2meimwMIHPXTKkB9sRrGLtTBDCgNyNb00QhG8jYeZ',
@@ -50,6 +56,32 @@ const Payement = ({ totalPrice, foodsInTheBasket }: CheckoutModelFooterProps) =>
           </>
         ) : (
           <Elements stripe={stripePromise} options={clientSecret}>
+            <Accordion
+              className="my-[3%] w-full rounded-lg bg-white p-5 shadow-sm"
+              type="single"
+              collapsible
+            >
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  <p className="">Copy/Paste this details to pay</p>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="py-1 font-medium">Stripe Test Card</p>
+                  <p className="flex gap-1 py-1">
+                    <span className="font-medium">Card number:</span>
+                    <span className="font-light">4242 4242 4242 4242</span>
+                  </p>
+                  <p className="flex gap-1 py-1">
+                    <span className="font-medium">Expiry:</span>
+                    <span className="font-light">09/26</span>
+                  </p>
+                  <p className="flex gap-1 py-1">
+                    <span className="font-medium">CVC:</span>
+                    <span className="font-light">234</span>
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
             <StripeSetup foodsInTheBasket={foodsInTheBasket} totalPrice={totalPrice} />
           </Elements>
         )}

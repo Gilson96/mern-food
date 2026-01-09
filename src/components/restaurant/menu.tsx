@@ -6,8 +6,6 @@ import Food from './food';
 import ShoppingCart from '../checkout/shoppingCart';
 import { Loader2Icon } from 'lucide-react';
 import AddFood from '../profile/addFood';
-import { useState } from 'react';
-import { useAuth } from '@/features/auth/useAuth';
 
 type MenuProps = {
   restaurant: Meal;
@@ -20,15 +18,16 @@ const Menu = ({ restaurant, restaurantLoading }: MenuProps) => {
     restaurant?.foods.includes(food._id as string),
   );
   const foodsInTheBasket = useSelector((state: RootState) => state.cart.cart);
-  const [open, setOpen] = useState(false);
-  const { role } = useAuth();
+  const role = useSelector((state: RootState) => state.auth.role);
+
   const restaurantOwned = restaurant?.admin?.length > 5;
 
   const foodLoading = isLoading || isFetching;
 
+  console.log(restaurant);
   return (
     <section className="h-full w-full">
-      <div className='flex items-center justify-between'>
+      <div className="flex items-center justify-between">
         <p className="p-[3%] text-xl font-bold">Menu</p>
         {restaurantOwned && role === 'admin' && <AddFood restaurantId={restaurant?._id} />}
       </div>
@@ -52,18 +51,12 @@ const Menu = ({ restaurant, restaurantLoading }: MenuProps) => {
         </div>
       )}
 
-      {/* Only show checkout */}
-      {/* If has something inside */}
-      {foodsInTheBasket.length <= 0 ? (
-        ''
-      ) : (
-        <>
-          <div className="fixed bottom-[1rem] flex w-full cursor-pointer flex-col items-center justify-center">
-            <div className={`h-auto`}>
-              <ShoppingCart open={open} setOpen={setOpen} />
-            </div>
-          </div>
-        </>
+      {foodsInTheBasket.length > 0 && (
+        <ShoppingCart>
+          <span className="fixed bottom-[1rem] flex h-[3rem] w-[10rem] cursor-pointer items-center justify-center place-self-center rounded-full bg-green-500 text-lg font-medium text-white shadow hover:bg-green-600">
+            Cart ({foodsInTheBasket.length})
+          </span>
+        </ShoppingCart>
       )}
     </section>
   );

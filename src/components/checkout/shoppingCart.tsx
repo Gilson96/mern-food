@@ -15,13 +15,13 @@ import { foodsTotalPrice } from '@/features/cart/cartSlice';
 import useScreenSize from '@/hooks/useScreenSize';
 import ShoppingCartAccordion from './shoppingCartAccordion';
 import ShoppingCartSkeleton from '../skeletons/shoppingCartSkeleton';
+import { ReactNode } from 'react';
 
 type ShoppingCartProps = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  children: ReactNode;
 };
 
-const ShoppingCart = ({ open, setOpen }: ShoppingCartProps) => {
+const ShoppingCart = ({ children }: ShoppingCartProps) => {
   const foodsInTheBasket = useSelector((state: RootState) => state.cart.cart);
   const { data: restaurants, isLoading, isFetching } = useGetRestaurantsQuery();
   const totalPrice = useSelector(foodsTotalPrice);
@@ -34,19 +34,13 @@ const ShoppingCart = ({ open, setOpen }: ShoppingCartProps) => {
   return (
     <>
       {isLoading || isFetching ? (
-        <ShoppingCartSkeleton open={open} screenSize={screenSize.width} />
+        <ShoppingCartSkeleton screenSize={screenSize.width} />
       ) : (
-        <Drawer
-          open={open}
-          onOpenChange={setOpen}
-          direction={screenSize.width < 767 ? 'bottom' : 'right'}
-        >
-          <DrawerTrigger className="h-[3rem] w-[10rem] cursor-pointer rounded-full bg-green-500 text-lg font-medium text-white shadow hover:bg-green-600">
-            Cart ({foodsInTheBasket.length})
-          </DrawerTrigger>
+        <Drawer direction={screenSize.width < 767 ? 'bottom' : 'right'}>
+          <DrawerTrigger className="h-full w-full">{children}</DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle>Cart</DrawerTitle>
+              <DrawerTitle className="border-b text-lg">Cart</DrawerTitle>
               <div className="max-h-[12rem] overflow-hidden overflow-y-auto lg:max-h-[25rem]">
                 {findRestaurant?.map((restaurant) => {
                   const matchingEntry = foodsInTheBasket.find(

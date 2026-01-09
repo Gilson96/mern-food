@@ -7,21 +7,15 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 
-const ShoppingCartSkeleton = ({ open, screenSize }: { open: boolean; screenSize: number }) => {
+const ShoppingCartSkeleton = ({ screenSize }: { screenSize: number }) => {
   return (
-    <Drawer
-      open={open}
-      onOpenChange={() => {}}
-      direction={screenSize < 767 ? 'bottom' : 'right'}
-    >
-      {/* Trigger (placeholder button) */}
+    <Drawer direction={screenSize < 767 ? 'bottom' : 'right'}>
       <div className="h-[3rem] w-[10rem] animate-pulse rounded-full bg-green-300 shadow" />
 
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle className="h-6 w-20 animate-pulse rounded bg-neutral-200" />
 
-          {/* Cart Items Skeleton */}
           <div className="mt-4 max-h-[12rem] space-y-3 overflow-hidden overflow-y-auto lg:max-h-[25rem]">
             {[1, 2, 3].map((i) => (
               <div
@@ -38,7 +32,6 @@ const ShoppingCartSkeleton = ({ open, screenSize }: { open: boolean; screenSize:
           </div>
         </DrawerHeader>
 
-        {/* Footer with skeleton button */}
         <DrawerFooter className="w-full">
           <Button
             disabled

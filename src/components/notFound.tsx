@@ -10,7 +10,7 @@ const NotFound = () => {
       <p className="max-w-sm text-gray-600">
         Sorry, the page you’re looking for doesn’t exist or has been moved.
       </p>
-      <Link to="/home" className="mt-4">
+      <Link to="/" className="mt-4">
         <Button className="cursor-pointer rounded-full bg-green-500 hover:bg-green-600">
           Go to Homepage
         </Button>

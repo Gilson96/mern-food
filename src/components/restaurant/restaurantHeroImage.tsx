@@ -1,8 +1,8 @@
 import { Meal } from '@/hooks/dataTypes';
 import { useFavorites } from '@/hooks/useFavorites';
+import { RootState } from '@/store';
 import { HeartIcon } from 'lucide-react';
-import UploadImageToImageKit from '../profile/uploadImageToImageKit';
-import { useAuth } from '@/features/auth/useAuth';
+import { useSelector } from 'react-redux';
 
 type RestaurantHeroImageProps = {
   restaurantId?: string;
@@ -13,7 +13,7 @@ type RestaurantHeroImageProps = {
 
 const RestaurantHeroImage = ({ restaurant, isFetching, isLoading }: RestaurantHeroImageProps) => {
   const { toggleFavorite, isFavorite } = useFavorites();
-  const { role } = useAuth();
+  const role = useSelector((state: RootState) => state.auth.role);
 
   const loading = isLoading || isFetching;
   const restaurantOwned = restaurant?.admin?.length > 5;
@@ -26,12 +26,6 @@ const RestaurantHeroImage = ({ restaurant, isFetching, isLoading }: RestaurantHe
           loading ? 'animate-pulse bg-neutral-400' : 'bg-neutral-400'
         } ${restaurantOwned && role === 'admin' ? 'justify-between' : 'justify-end'}`}
       >
-        {/* Upload button for restaurant owner */}
-        {!loading && restaurantOwned && role === 'admin' && (
-          <UploadImageToImageKit imageUploadEntity="restaurant" restaurantId={restaurant._id} />
-        )}
-
-        {/* Favorite icon */}
         {!loading && (
           <span
             onClick={() => toggleFavorite(restaurant)}

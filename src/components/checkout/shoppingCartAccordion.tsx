@@ -21,7 +21,7 @@ const ShoppingCartAccordion = ({ restaurant, findRestaurantFoods }: ShoppingCart
     <Accordion type="single" collapsible className="flex w-full items-center">
       <AccordionItem value="item-1" className="w-full">
         <AccordionTrigger className="flex w-full cursor-pointer items-center justify-between px-[2%]">
-          <div className='flex items-center gap-2'>
+          <div className="flex items-center gap-2">
             <Avatar className="size-12">
               <AvatarImage src={restaurant?.logo_image} />
               <AvatarFallback>{restaurant?.name}</AvatarFallback>
@@ -30,7 +30,7 @@ const ShoppingCartAccordion = ({ restaurant, findRestaurantFoods }: ShoppingCart
           </div>
           <ChevronDown />
         </AccordionTrigger>
-        <AccordionContent className='p-[2%]'>
+        <AccordionContent className="p-[2%]">
           {findRestaurantFoods.map((food) => (
             <>
               <div key={food._id} className="flex items-center justify-between py-1">
@@ -40,11 +40,20 @@ const ShoppingCartAccordion = ({ restaurant, findRestaurantFoods }: ShoppingCart
                     <AvatarFallback>{food.name}</AvatarFallback>
                   </Avatar>
                   <p>{food.name}</p>
+                  <p className="text-neutral-500 text-sm font-light">£{food.price}</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <MinusCircle onClick={() => dispatch(removeFromCart(food))} />
+                  <MinusCircle
+                    className="cursor-pointer"
+                    strokeWidth={1}
+                    onClick={() => dispatch(removeFromCart(food))}
+                  />
                   <p className="text-sm text-gray-500">{food.quantity}</p>
-                  <PlusCircle onClick={() => dispatch(addToCart(food))} />
+                  <PlusCircle
+                    className="cursor-pointer"
+                    strokeWidth={1}
+                    onClick={() => dispatch(addToCart(food))}
+                  />
                 </div>
               </div>
             </>

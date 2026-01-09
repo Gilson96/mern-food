@@ -5,24 +5,24 @@ import {
 } from '@/features/auth/authApi';
 import { toast } from 'sonner';
 import { Meal } from './dataTypes';
-import { useAuth } from '@/features/auth/useAuth';
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
 
 export const useFavorites = () => {
   const { data: userDetails, isLoading, isFetching, refetch } = useGetUserQuery();
-  const authUser = useAuth();
+  const role = useSelector((state: RootState) => state.auth.role);
+  const user_id = useSelector((state: RootState) => state.auth.user_id);
 
-  const matchedUser = userDetails?.find((u) => u.name === authUser.role);
-  const userFavorites = matchedUser?.favouritesRestaurants ?? [];
-  const userId = matchedUser?._id ?? '';
+  const user = userDetails?.find((u) => u.name === role);
 
   const [postToFavourite] = usePostToFavouriteMutation();
   const [removeFromFavourite] = useRemoveFromFavouriteMutation();
 
   const isFavorite = (restaurantId: string) =>
-    userFavorites.some((fav) => fav._id === restaurantId);
+    user?.favouritesRestaurants?.some((fav) => fav._id === restaurantId);
 
   const toggleFavorite = async (restaurant: Meal) => {
-    if (!userId) {
+    if (!user_id) {
       toast.error('User not logged in');
       return;
     }
@@ -32,13 +32,13 @@ export const useFavorites = () => {
     try {
       if (alreadyFavorite) {
         await removeFromFavourite({
-          userId,
+          userId: user_id!,
           restaurantId: restaurant._id,
         }).unwrap();
         toast.success('Removed from favorites');
       } else {
         await postToFavourite({
-          userId,
+          userId: user_id!,
           body: restaurant,
         }).unwrap();
         toast.success('Added to favorites');
@@ -56,6 +56,5 @@ export const useFavorites = () => {
     isLoading,
     isFetching,
     refetchUser: refetch,
-    matchedUser
   };
 };

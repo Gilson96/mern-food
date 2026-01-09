@@ -12,5 +12,5 @@ export const indexApi = createApi({
   }),
   tagTypes: ['User', 'Restaurant', 'Food', 'Review'],
 
-  endpoints: (build) => ({})
+  endpoints: () => ({})
 });

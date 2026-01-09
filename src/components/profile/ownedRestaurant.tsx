@@ -18,6 +18,7 @@ const OwnedRestaurant = ({
 
   const findOwnedRestaurants = listData?.restaurants?.filter((res) => res.admin === findUser._id);
 
+  console.log(findOwnedRestaurants)
   return (
     <div>
       <p className="my-[1%] font-medium">Owned Restaurants</p>

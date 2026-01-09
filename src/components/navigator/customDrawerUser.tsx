@@ -1,26 +1,14 @@
-import { AuthState } from '@/hooks/dataTypes';
 import { Heart, ReceiptText, Store, UserCircle2, UserPlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CustomDrawerProps } from './customDrawer';
 
-type CustomDrawerUserProps = {
-  user: {
-    isAuthenticated: boolean;
-    role: 'user' | 'admin' | 'guest';
-    address: string;
-    user: AuthState;
-  };
-};
-
-const CustomDrawerUser = ({ user }: CustomDrawerUserProps) => {
+const CustomDrawerUser = ({ role }: CustomDrawerProps) => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-1">
           <UserCircle2 size={50} />
-          <p className="text-lg font-medium capitalize">{user.role}</p>
-        </div>
-        <div className="rounded-full border border-black px-[4%] py-[2%]">
-          <p>{user.address?.toUpperCase()}</p>
+          <p className="text-lg font-medium capitalize">{role}</p>
         </div>
       </div>
       <div className="flex flex-col gap-3 px-[2%]">
@@ -36,7 +24,7 @@ const CustomDrawerUser = ({ user }: CustomDrawerUserProps) => {
           <ReceiptText />
           <p>Orders</p>
         </Link>
-        {user.role === 'admin' && (
+        {role === 'admin' && (
           <Link
             to={'/profile'}
             state={{ tabChoice: 'owned' }}
@@ -46,7 +34,7 @@ const CustomDrawerUser = ({ user }: CustomDrawerUserProps) => {
             <p>Owned Restaurants</p>
           </Link>
         )}
-        {user.role !== 'admin' && (
+        {role !== 'admin' && (
           <div className="flex flex-col pt-[2%]">
             <p className="text-neutral-400 italic">Admin login required</p>
             <hr className="h-[1px] w-full bg-neutral-100" />
@@ -56,7 +44,7 @@ const CustomDrawerUser = ({ user }: CustomDrawerUserProps) => {
         <Link
           to={'/profile'}
           state={{ tabChoice: 'addRestaurant' }}
-          className={`flex items-center gap-1 ${user.role === 'admin' && 'pt-[5%]'}`}
+          className={`flex items-center gap-1 ${role === 'admin' && 'pt-[5%]'}`}
         >
           <UserPlus />
           <p>Add your restaurant</p>

@@ -15,7 +15,7 @@ const SearchRestaurantsDesktop = ({ listData, loading, setIsFiltered }: SearchRe
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  // Close dropdown on click outside
+ 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {

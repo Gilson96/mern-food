@@ -71,12 +71,8 @@ export interface PaymentIntent {
 }
 
 export interface AuthState {
-  email: string | null;
-  token: string | null;
   role: 'admin' | 'user' | 'guest' | null;
-  address: string | null;
-  favorites: Meal[] | null;
-  orders: Meal[] | null;
+  user_id: string | null
 }
 
 export interface ListData {

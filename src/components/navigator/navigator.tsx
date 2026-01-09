@@ -1,16 +1,18 @@
 import CustomDrawer from './customDrawer';
-import { useAuth } from '@/features/auth/useAuth';
 import { Button } from '../ui/button';
-import { MapPin, ShoppingCartIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ShoppingCartIcon } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import useScreenSize from '@/hooks/useScreenSize';
 import SearchRestaurantsDesktop from '../home/searchRestaurantsDesktop';
 import { ListData } from '@/hooks/dataTypes';
 import { HomePageProps } from '../home/homePage';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { useState } from 'react';
 import ShoppingCart from '../checkout/shoppingCart';
+import { logOut } from '@/features/auth/authSlice';
+import { emptyCart } from '@/features/cart/cartSlice';
+import { persistor } from '@/store';
+import { toast } from 'sonner';
 
 type NavigatorProps = {
   listData: ListData;
@@ -20,36 +22,35 @@ type NavigatorProps = {
 
 const Navigator = ({ listData, setIsFiltered, loading }: NavigatorProps) => {
   const screenSize = useScreenSize();
-  const user = useAuth();
-  const userRole = user.role;
   const foodsInTheBasket = useSelector((state: RootState) => state.cart.cart);
-  const [open, setOpen] = useState(false);
+  const role = useSelector((state: RootState) => state.auth.role);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await persistor.purge();
+      dispatch(logOut());
+      dispatch(emptyCart());
+      navigate('/login');
+    } catch (err) {
+      toast('oh no an error');
+    }
+  };
 
   return (
     <main className="flex items-center justify-between p-[3%]">
-      {/*  logo and drawer */}
       <div
         onClick={() => setIsFiltered({ sortBy: 'All', price: 'Lowest' })}
         className="flex items-center gap-2"
       >
-        <CustomDrawer />
-        <Link to="/home" className="text-xl">
+        <CustomDrawer role={role} handleLogout={handleLogout} />
+        <Link to="/" className="text-xl">
           <span className="font-medium text-green-500">Mern</span>
           <span> Foods</span>
         </Link>
       </div>
 
-      {/*  address or loading skeleton */}
-      <div className="flex w-auto items-center gap-1 rounded-full border border-black px-[2%] py-[0.5%]">
-        <MapPin size={15} />
-        {loading ? (
-          <div className="h-4 w-24 animate-pulse rounded bg-neutral-300" />
-        ) : (
-          <p className="font-medium">{user?.address?.toUpperCase()}</p>
-        )}
-      </div>
-
-      {/* desktop search bar */}
       {screenSize.width > 767 && (
         <SearchRestaurantsDesktop
           setIsFiltered={setIsFiltered}
@@ -58,13 +59,11 @@ const Navigator = ({ listData, setIsFiltered, loading }: NavigatorProps) => {
         />
       )}
 
-      {/* shopping cart */}
-      <div className="flex items-center gap-3" onClick={() => setOpen(true)}>
+      <div className="flex cursor-pointer items-center gap-3">
         <div className="relative">
-          <ShoppingCartIcon className="h-6 w-6" />
-          <div className="hidden">
-            <ShoppingCart open={open} setOpen={setOpen} />
-          </div>
+          <ShoppingCart>
+            <ShoppingCartIcon className="h-6 w-6 cursor-pointer" />
+          </ShoppingCart>
           {foodsInTheBasket.length > 0 && (
             <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white">
               {foodsInTheBasket.length}
@@ -72,12 +71,15 @@ const Navigator = ({ listData, setIsFiltered, loading }: NavigatorProps) => {
           )}
         </div>
 
-        {/* login */}
-        {userRole === 'guest' && (
-          <Link to="/" className="flex items-center gap-3">
-            <Button className="rounded-full">Login</Button>
-          </Link>
-        )}
+        <Link
+          to="/login"
+          onClick={() => {
+            dispatch(logOut());
+          }}
+          className="flex items-center gap-3"
+        >
+          <Button className="rounded-full">{role === 'guest' ? 'Login' : 'Logout'}</Button>
+        </Link>
       </div>
     </main>
   );

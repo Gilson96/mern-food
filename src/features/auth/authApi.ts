@@ -1,29 +1,12 @@
-import { Food, LoginRequest, PaymentIntent, User, UserResponse } from '@/hooks/dataTypes';
+import { Food, LoginRequest, Meal, PaymentIntent, User, UserResponse } from '@/hooks/dataTypes';
 import { indexApi } from '../indexApi';
 
 const auth = indexApi.injectEndpoints({
   endpoints: (build) => ({
-    login: build.mutation<UserResponse, LoginRequest>({
-      query: (credentials) => ({
-        url: 'login',
-        method: 'POST',
-        body: credentials,
-        credentials: 'include',
-      }),
-      invalidatesTags: ['User'],
-    }),
 
     getUser: build.query<User[], void>({
-      query: () => ({ url: 'user', credentials: "include" }),
+      query: () => ({ url: 'user' }),
       providesTags: ['User'],
-    }),
-
-    logout: build.mutation<UserResponse, void>({
-      query: () => ({
-        url: 'logout',
-        method: 'POST',
-      }),
-      invalidatesTags: ['User'],
     }),
 
     postToFavourite: build.mutation<
@@ -91,7 +74,7 @@ const auth = indexApi.injectEndpoints({
     }),
 
     postCreateRestaurant: build.mutation({
-      query: ({ categoryId, body }: { categoryId: string; body: FormData }) => ({
+      query: ({ categoryId, body }) => ({
         url: `restaurant/${categoryId}`,
         method: 'POST',
         body,
@@ -120,7 +103,7 @@ const auth = indexApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: (result, error, { restaurantId }) => [{ type: 'Food', id: restaurantId }],
+      invalidatesTags: (result, error, { restaurantId }) => [{ type: 'Restaurant' }],
     }),
 
     putUpdateFood: build.mutation({
@@ -153,8 +136,6 @@ const auth = indexApi.injectEndpoints({
 });
 
 export const {
-  useLoginMutation,
-  useLogoutMutation,
   useGetUserQuery,
   usePostToFavouriteMutation,
   useRemoveFromFavouriteMutation,

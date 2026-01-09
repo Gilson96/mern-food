@@ -35,7 +35,13 @@ const FoodSelected = ({ foodsQuantity, food, foodLoading }: FoodSelectedProps) =
 
   return (
     <div className="flex flex-col">
-      <img src={food.poster_image} alt={food.name} className="rounded pt-[1rem]" />
+      {food.poster_image === undefined ? (
+        <div className="flex text-white font-bold text-xl h-[10rem] w-[full] mt-[1rem] items-center justify-center rounded bg-neutral-500">
+          {food.name}
+        </div>
+      ) : (
+        <img src={food.poster_image} alt={food.name} className="rounded pt-[1rem]" />
+      )}
       <div className="flex items-center justify-between pt-[2%] text-xl font-medium">
         <p>{food.name}</p>
         <p>£{Number(food.price).toFixed(2)}</p>

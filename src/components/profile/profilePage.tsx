@@ -2,7 +2,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Navigator from '../navigator/navigator';
 import { useListTabsData } from '@/hooks/useListTabsData';
 import { UserCircle2 } from 'lucide-react';
-import { useAuth } from '@/features/auth/useAuth';
 import { useGetUserQuery } from '@/features/auth/authApi';
 import { useLocation } from 'react-router-dom';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -10,13 +9,15 @@ import Favorites from './favorites';
 import Orders from './orders';
 import AddRestaurant from './addRestaurant';
 import OwnedRestaurant from './ownedRestaurant';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 type ProfilePageProps = {
   state: { tabChoice: string };
 };
 
 const ProfilePage = () => {
-  const user = useAuth();
+  const role = useSelector((state: RootState) => state.auth.role);
   const {
     listData,
     isLoading: listDataLoading,
@@ -24,7 +25,7 @@ const ProfilePage = () => {
   } = useListTabsData(undefined);
   const { data: userDetails, isLoading, isFetching } = useGetUserQuery();
   const { state }: ProfilePageProps = useLocation();
-  const findUser = userDetails?.find((u) => u.role === user.role);
+  const findUser = userDetails?.find((u) => u.role === role);
   const { toggleFavorite } = useFavorites();
 
   const listLoading = listDataLoading || listDataFecthing;
@@ -35,7 +36,7 @@ const ProfilePage = () => {
       <Navigator loading={listLoading} listData={listData} setIsFiltered={() => {}} />
       <div className="flex h-[8rem] items-center justify-start gap-2 border-b bg-neutral-100 p-[3%]">
         <UserCircle2 color="oklch(72.3% 0.219 149.579)" size={80} />
-        <p className="text-2xl capitalize">{user.role}</p>
+        <p className="text-2xl capitalize">{role}</p>
       </div>
       <div className="w-full p-[3%]">
         <Tabs defaultValue={state.tabChoice} className="w-full">
@@ -47,15 +48,13 @@ const ProfilePage = () => {
               <TabsTrigger className="cursor-pointer" value="orders">
                 Orders
               </TabsTrigger>
-              {user.role === 'admin' && (
+              {role === 'admin' && (
                 <TabsTrigger className="cursor-pointer" value="owned">
                   Owned
                 </TabsTrigger>
               )}
             </TabsList>
-            {user.role === 'admin' && (
-              <AddRestaurant state={state.tabChoice} findUser={findUser!} />
-            )}
+            {role === 'admin' && <AddRestaurant state={state.tabChoice} findUser={findUser!} />}
           </div>
           <TabsContent value="favorites">
             <Favorites
@@ -67,9 +66,9 @@ const ProfilePage = () => {
             />
           </TabsContent>
           <TabsContent value="orders">
-            <Orders findUser={findUser} userLoading={userLoading}/>
+            <Orders findUser={findUser} userLoading={userLoading} />
           </TabsContent>
-          {user.role === 'admin' && (
+          {role === 'admin' && (
             <TabsContent value="owned">
               <OwnedRestaurant
                 listLoading={listLoading}

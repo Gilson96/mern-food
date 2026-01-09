@@ -1,9 +1,10 @@
-import { useAuth } from '@/features/auth/useAuth';
 import { Meal } from '@/hooks/dataTypes';
 import { Heart, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useFavorites } from '@/hooks/useFavorites';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
 
 type RestaurantListProps = {
   restaurant: Meal;
@@ -11,8 +12,7 @@ type RestaurantListProps = {
 };
 
 const RestaurantList = ({ restaurant, loading }: RestaurantListProps) => {
-  const user = useAuth();
-  const userRole = user.role;
+  const role = useSelector((state: RootState) => state.auth.role);
   const { toggleFavorite, isFavorite, isLoading } = useFavorites();
 
   if (loading) {
@@ -34,15 +34,21 @@ const RestaurantList = ({ restaurant, loading }: RestaurantListProps) => {
     <section>
       <div className="flex flex-col gap-2">
         <Link to={`/restaurant/${restaurant._id}`}>
-          <div
-            style={{ backgroundImage: `url(${restaurant.poster_image})` }}
-            className="h-[10rem] w-full rounded-2xl bg-cover bg-center bg-no-repeat md:w-[15rem]"
-          />
+          {restaurant.poster_image !== undefined ? (
+            <div
+              style={{ backgroundImage: `url(${restaurant.poster_image})` }}
+              className="h-[10rem] w-full rounded-2xl bg-cover bg-center bg-no-repeat md:w-[15rem]"
+            />
+          ) : (
+            <div className="h-[10rem] text-white font-bold text-center text-xl bg-neutral-500 w-full place-content-center items-center justify-center rounded-2xl border md:w-[15rem]">
+              {restaurant.name}
+            </div>
+          )}
         </Link>
         <div className="flex flex-col">
           <div className="flex w-full items-center justify-between">
             <p className="text-sm font-medium md:text-lg">{restaurant.name}</p>
-            {userRole === 'guest' ? (
+            {role === 'guest' ? (
               <Popover>
                 <PopoverTrigger>
                   <Heart size={20} />
@@ -52,7 +58,11 @@ const RestaurantList = ({ restaurant, loading }: RestaurantListProps) => {
                 </PopoverContent>
               </Popover>
             ) : (
-              <button className='cursor-pointer' onClick={() => toggleFavorite(restaurant)} disabled={isLoading}>
+              <button
+                className="cursor-pointer"
+                onClick={() => toggleFavorite(restaurant)}
+                disabled={isLoading}
+              >
                 {isFavorite(restaurant._id) ? (
                   <Heart size={20} fill="black" />
                 ) : (

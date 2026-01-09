@@ -52,7 +52,7 @@ const Food = ({ restaurant, food, restaurantLoading, foodLoading }: FoodProps) =
             <p className="text-lg font-semibold">{food.name}</p>
             <p>£{Number(food.price).toFixed(2)}</p>
           </div>
-          {food.poster_image.length <= 0 ? (
+          {food?.poster_image?.length <= 0 ? (
             <UploadImageToImageKit
               imageUploadEntity="food"
               foodId={food._id}

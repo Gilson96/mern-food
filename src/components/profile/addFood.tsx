@@ -1,40 +1,45 @@
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
-import { Loader2Icon, Plus } from 'lucide-react';
-import { z } from 'zod';
+import { Plus } from 'lucide-react';
 import { usePostCreateFoodMutation } from '@/features/auth/authApi';
-import { foodFormSchema } from '@/hooks/useFormRestaurant';
-import { useAddEntityForm } from '@/hooks/useAddToRestaurant';
-import FoodForm from './foodForm';
+import { useState, useEffect, FormEvent } from 'react';
+import { toast } from 'sonner';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
 
-type FormData = z.infer<typeof foodFormSchema>;
 type AddFoodProps = {
   restaurantId: string;
 };
 const AddFood = ({ restaurantId }: AddFoodProps) => {
-  const {
-    open,
-    setOpen,
-    register,
-    control,
-    formState: { errors, isSubmitting },
-    onSubmit,
-  } = useAddEntityForm<FormData>({
-    schema: foodFormSchema,
-    defaultValues: { name: '', description: '', price: 0 },
-    openStateValue: 'addFood',
-    createMutation: usePostCreateFoodMutation,
-    restaurantId: restaurantId,
-    onBuildFormData: (data) => {
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('description', data.description);
-      formData.append('price', data.price.toString());
-      formData.append('restaurantId', restaurantId);
-      return formData;
-    },
-    successMessage: 'Food added successfully',
-  });
+  const [open, setOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [postFood] = usePostCreateFoodMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsSuccess(false);
+      setOpen(false);
+    }
+  }, [isSuccess]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const getFormData = Object.fromEntries(formData.entries());
+
+    const newFood = {
+      ...getFormData,
+      restaurant: restaurantId
+    }
+    try {
+      await postFood({ restaurantId, body: newFood }).unwrap();
+      setIsSuccess(true);
+      toast.success('Success!');
+    } catch (err) {
+      toast.error('Something went wrong');
+      console.error(err);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => setOpen(isOpen)}>
@@ -46,27 +51,26 @@ const AddFood = ({ restaurantId }: AddFoodProps) => {
       </DialogTrigger>
       <DialogContent>
         <form
-          onSubmit={onSubmit}
+          onSubmit={handleSubmit}
           className="mt-[3%] h-[15rem] space-y-4 overflow-y-auto lg:h-[20rem]"
         >
           <p className="font-medium">Food</p>
           <hr className="h-[1px] w-full bg-neutral-100" />
 
-          <FoodForm control={control} errors={errors} register={register} />
+          <Label>Name</Label>
+          <Input type="text" name="name" placeholder="e.g. Margherita" />
+          <Label>Price</Label>
+          <Input type="number" min={0} name="price" />
+          <Label>Description</Label>
+          <textarea
+            name="description"
+            className="h-[5rem] w-full rounded shadow"
+            placeholder="e.g. Classic tomato base pizza"
+          />
 
           <hr className="h-[1px] w-full bg-neutral-100" />
-          <Button
-            type="submit"
-            className={`w-full ${isSubmitting ? 'bg-neutral-400' : 'bg-green-500'}`}
-          >
-            {isSubmitting ? (
-              <>
-                {' '}
-                <Loader2Icon className="animate-spin" /> <p>Please wait</p>
-              </>
-            ) : (
-              <p>Submit</p>
-            )}
+          <Button type="submit" className={`w-full bg-green-500`}>
+            <p>Submit</p>
           </Button>
         </form>
       </DialogContent>
