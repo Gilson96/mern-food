@@ -57,8 +57,6 @@ Admins can manage restaurants, foods, and view customer activity.
 
 ## 🧭 How to Run Locally
 
-### 1. Clone the Repositories
-
 ```bash
 # Frontend
 git clone https://github.com/Gilson96/mern-food.git
