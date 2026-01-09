@@ -1,4 +1,4 @@
-# 🍔 MERN Food Ordering App (TypeScript + Redux + TailwindCSS + Stripe)
+# MERN Food Ordering App (TypeScript + Redux + TailwindCSS + Stripe)
 
 A **full‑stack food ordering platform** built with **React, Redux Toolkit Query, TypeScript, Node.js, Express, MongoDB**, and **Stripe** for secure payments.  
 Users can browse restaurants, order food, leave reviews, and pay online.  
@@ -6,24 +6,8 @@ Admins can manage restaurants, foods, and view customer activity.
 
 ---
 
-🚀 **Live Demo**: [https://mernfoods.netlify.app](https://mernfoods.netlify.app/)  
-🔌 **Backend API**: [https://github.com/Gilson96/react-foods_api](https://github.com/Gilson96/react-foods_api)
-
----
-
-## 🔑 Test Credentials
-**User Account**  
-Email: `user@user.com`  
-Password: `user123`
-
-**Admin Account**  
-Email: `admin@admin.com`  
-Password: `admin123`
-
-**Stripe Test Card**  
-Card Number: `4242 4242 4242 4242`  
-Expiry: Any future date  
-CVC: Any 3 digits
+ **Live Demo**: [https://mernfoods.netlify.app](https://mernfoods.netlify.app/)  
+ **Backend API**: [https://github.com/Gilson96/react-foods_api](https://github.com/Gilson96/react-foods_api)
 
 ---
 
@@ -66,24 +50,9 @@ CVC: Any 3 digits
 
 ## 📷 Screenshots
 
-### 🔐 Login Page  
-![Login Page](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/loginPage.png?raw=true)
-
 ### 🏠 Homepage with Search & Filters  
 ![Homepage](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/homePage.png?raw=true)
 ![Search & Filters]([https://github.com/Gilson96/mern-foods/blob/master/src/screenshots/search.png?raw=true](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/navigator.png?raw=true))
-
-### 🍕 Restaurant  
-![Restaurant](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/restaurantPage.png?raw=true)
-![Menu](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/restaurantMenu.png?raw=true)
-![Food](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/food.png?raw=true)
-
-### 💳 Stripe Checkout  
-![Checkout](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/checkout.png?raw=true)
-
-### ✅ Profile
-![Profile](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/profilePage.png?raw=true)
-
 
 ---
 
@@ -135,5 +104,3 @@ STRIPE_SECRET_KEY=your_stripe_secret
 💼 LinkedIn: www.linkedin.com/in/gilson-de-almeida
 
 📧 Email: grafael99@gmail.com
-
-Built with ❤️ using TypeScript, Redux, TailwindCSS and the MERN stack – by a developer passionate about crafting real-world apps for real users. 🇬🇧
