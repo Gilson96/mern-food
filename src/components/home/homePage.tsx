@@ -41,7 +41,6 @@ const HomePage = () => {
   );
   const fastestRestaurant = listData?.restaurants?.filter((restaurant) => restaurant.arrival < 29);
 
-  console.log(listData);
   return (
     <>
       <Navigator loading={loading} setIsFiltered={setIsFiltered} listData={listData} />
