@@ -72,14 +72,6 @@ cd react-foods_api
 npm install
 npm run dev
 ```
-### 2. Configure Backend .env
-```bash
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-STRIPE_SECRET_KEY=your_stripe_secret
-```
-
 ---
 
 🤝 Contact
