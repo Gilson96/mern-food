@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import useScreenSize from '@/hooks/useScreenSize';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import FoodSelected from './foodSelected';
-import UploadImageToImageKit from '../profile/uploadImageToImageKit';
 
 type FoodProps = {
   restaurant: Meal;
@@ -52,12 +51,8 @@ const Food = ({ restaurant, food, restaurantLoading, foodLoading }: FoodProps) =
             <p className="text-lg font-semibold">{food.name}</p>
             <p>£{Number(food.price).toFixed(2)}</p>
           </div>
-          {food?.poster_image?.length <= 0 ? (
-            <UploadImageToImageKit
-              imageUploadEntity="food"
-              foodId={food._id}
-              restaurantId={restaurant?._id!}
-            />
+          {food?.poster_image === undefined ? (
+            <div></div>
           ) : (
             <img
               style={{
@@ -72,7 +67,12 @@ const Food = ({ restaurant, food, restaurantLoading, foodLoading }: FoodProps) =
       </DialogTrigger>
       <hr className="my-[3%] h-[1px] w-full bg-neutral-100 md:hidden" />
       <DialogContent>
-        <FoodSelected food={food} foodLoading={foodLoading} foodsQuantity={foodsQuantity} screenSize={screenSize} />
+        <FoodSelected
+          food={food}
+          foodLoading={foodLoading}
+          foodsQuantity={foodsQuantity}
+          screenSize={screenSize}
+        />
       </DialogContent>
     </Dialog>
   );

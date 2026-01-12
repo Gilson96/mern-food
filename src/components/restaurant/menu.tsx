@@ -24,7 +24,6 @@ const Menu = ({ restaurant, restaurantLoading }: MenuProps) => {
 
   const foodLoading = isLoading || isFetching;
 
-  console.log(restaurant);
   return (
     <section className="h-full w-full">
       <div className="flex items-center justify-between">

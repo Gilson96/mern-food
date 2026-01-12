@@ -3,7 +3,7 @@ import { AuthState } from '@/hooks/dataTypes';
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { role: null, user_id: null } as AuthState,
+  initialState: { role: "guest", user_id: null } as AuthState,
 
   reducers: {
 
