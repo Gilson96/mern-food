@@ -42,7 +42,24 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
-    const result = await stripe.confirmPayment({ elements, redirect: 'if_required' });
+    const result = await stripe.confirmPayment({
+      elements,
+      redirect: 'if_required',
+      confirmParams: {
+        payment_method_data: {
+          billing_details: {
+            address: {
+              country: 'GB',
+              city: 'Manchester',
+              postal_code: 'M9 4WF',
+              state: 'Manchester',
+              line1: 'first line of address',
+              line2: 'second line of address'
+            },
+          },
+        },
+      },
+    });
 
     if (result.error) {
       console.error(result.error.message);
@@ -70,7 +87,10 @@ const StripeSetup = ({ foodsInTheBasket, totalPrice }: StripeSetupProps) => {
   return (
     <>
       <form onSubmit={handleSubmit} id="payment-form" className="flex flex-col gap-4">
-        <PaymentElement id="payment-element" />
+        <PaymentElement
+          id="payment-element"
+          options={{ wallets: { link: 'never' }, fields: { billingDetails: { address: 'never' } } }}
+        />
 
         <Button
           type="submit"
