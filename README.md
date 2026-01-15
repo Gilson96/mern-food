@@ -31,22 +31,12 @@ Admins can manage restaurants, food items, and customer orders.
 
 ## Tech Stack
 
-### Frontend
 - React 18
 - TypeScript
 - Redux Toolkit Query
 - Tailwind CSS
 - Shadcn/ui
 - Stripe integration for payments
-
-### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose ODM
-- JWT Authentication
-- bcrypt password hashing
-- Hosted on Heroku
 
 ---
 
