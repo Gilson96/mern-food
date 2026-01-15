@@ -1,8 +1,9 @@
-# MERN Food
+# MERN Foods
 
-A **full‑stack food ordering platform** built with **React, Redux Toolkit Query, TypeScript, Node.js, Express, MongoDB**, and **Stripe** for secure payments.  
-Users can browse restaurants, order food, leave reviews, and pay online.  
-Admins can manage restaurants, foods, and view customer activity.
+MERN Foods is a full-stack food ordering application.
+
+Users can browse restaurants, search menus, add items to a cart, place orders, and pay online using Stripe.  
+Admins can manage restaurants, food items, and customer orders.
 
 ---
 
@@ -11,16 +12,16 @@ Admins can manage restaurants, foods, and view customer activity.
 
 ---
 
-## 🔒 Features
+## Main features
 
-### **User**
+### User
 - Browse restaurants & menus
 - Search for foods/restaurants
 - Add items to cart
 - Checkout with Stripe payment
 - Leave reviews & ratings
 
-### **Admin**
+### Admin
 - Add, edit, and delete restaurants
 - Add, edit, and delete foods
 - View and manage customer orders
@@ -28,54 +29,46 @@ Admins can manage restaurants, foods, and view customer activity.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
-### **Frontend**
-- React 18 + TypeScript
-- Redux Toolkit Query for state & API management
-- React Hook Form + Zod for form validation
-- Tailwind CSS + Shadcn UI for styling
+### Frontend
+- React 18
+- TypeScript
+- Redux Toolkit Query
+- Tailwind CSS
+- Shadcn/ui
 - Stripe integration for payments
 
-### **Backend**
-- Node.js + Express.js
-- MongoDB + Mongoose ODM
-- JWT Authentication + bcrypt password hashing
-- Multer for image uploads
-- Express Validator for request validation
-- Stripe SDK for payment processing
-- Hosted on **Heroku**
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose ODM
+- JWT Authentication
+- bcrypt password hashing
+- Hosted on Heroku
 
 ---
 
-## 📷 Screenshots
+## Screenshots
 
-### 🏠 Homepage with Search & Filters  
+### Homepage with Search & Filters  
 ![Homepage](https://github.com/Gilson96/mern-food/blob/master/src/assets/screenshots/homePage.png?raw=true)
 
 ---
 
-## 🧭 How to Run Locally
+## How to Run Locally
 
 ```bash
-# Frontend
 git clone https://github.com/Gilson96/mern-food.git
 cd mern-food
 npm install
 npm run dev
 
-# Backend
-git clone https://github.com/Gilson96/react-foods_api.git
-cd react-foods_api
-npm install
-npm run dev
 ```
 ---
 
-🤝 Contact
+Contact
 
-👤 GitHub: @Gilson96
-
-💼 LinkedIn: www.linkedin.com/in/gilson-de-almeida
-
-📧 Email: grafael99@gmail.com
+LinkedIn: www.linkedin.com/in/gilson-de-almeida
+Email: grafael99@gmail.com
