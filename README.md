@@ -58,7 +58,7 @@ npm run dev
 ```
 ---
 
-Contact
+## Contact
 
-LinkedIn: www.linkedin.com/in/gilson-de-almeida
+LinkedIn:  https://www.linkedin.com/in/gilson-de-almeida
 Email: grafael99@gmail.com
