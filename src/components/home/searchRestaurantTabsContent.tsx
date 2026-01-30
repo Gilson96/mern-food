@@ -20,7 +20,7 @@ const SearchRestaurantTabsContent = ({
   categoryId,
 }: SearchRestaurantTabsContentProps) => {
   return (
-    <div className="flex max-h-[400px] flex-col gap-3 overflow-y-auto py-[3%]">
+    <div className="flex h-full flex-col gap-3  py-[3%]">
       <div
         onClick={() => !loading && setIsFiltered({ category: categoryId })}
         className="flex cursor-pointer items-center gap-2 px-2"

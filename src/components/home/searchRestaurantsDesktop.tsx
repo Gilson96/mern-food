@@ -57,7 +57,7 @@ const SearchRestaurantsDesktop = ({ listData, loading, setIsFiltered }: SearchRe
           </div>
           {showDropdown && (
             <div className="absolute z-50 mt-2 w-full rounded-xl border bg-white p-4 shadow-lg">
-              <div className="space-y-3">
+              <div className="space-y-3 overflow-y-auto max-h-[30rem]">
                 {inputValue.length === 0 ? (
                   <SearchRestaurantTabs
                     setIsFiltered={setIsFiltered}
