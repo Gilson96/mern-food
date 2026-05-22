@@ -33,13 +33,13 @@ const HomePage = () => {
   const { listData, isLoading, isFetching } = useListTabsData(undefined);
   const loading = isLoading || isFetching;
 
-  const highestRatedRestaurant = listData?.restaurants?.filter(
-    (restaurant) => parseFloat(restaurant.rating) > 4.5,
-  );
-  const lowCostFeeRestaurant = listData?.restaurants?.filter(
-    (restaurant) => parseFloat(restaurant.deliveryFee) < 5,
-  );
-  const fastestRestaurant = listData?.restaurants?.filter((restaurant) => restaurant.arrival < 29);
+  const highestRatedRestaurant =
+    listData?.restaurants?.filter((r) => parseFloat(r.rating) > 4.5) ?? [];
+
+  const lowCostFeeRestaurant =
+    listData?.restaurants?.filter((r) => parseFloat(r.deliveryFee) < 5) ?? [];
+
+  const fastestRestaurant = listData?.restaurants?.filter((r) => r.arrival < 29) ?? [];
 
   return (
     <>

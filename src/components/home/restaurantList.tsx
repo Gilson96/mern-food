@@ -35,12 +35,14 @@ const RestaurantList = ({ restaurant, loading }: RestaurantListProps) => {
       <div className="flex flex-col gap-2">
         <Link to={`/restaurant/${restaurant._id}`}>
           {restaurant.poster_image !== undefined ? (
-            <div
-              style={{ backgroundImage: `url(${restaurant.poster_image})` }}
-              className="h-[10rem] w-full rounded-2xl bg-cover bg-center bg-no-repeat md:w-[15rem]"
+            <img
+              src={restaurant.poster_image}
+              loading="lazy"
+              alt={restaurant.name}
+              className="h-[10rem] w-full rounded-2xl object-cover md:w-[15rem]"
             />
           ) : (
-            <div className="h-[10rem] text-white font-bold text-center text-xl bg-neutral-500 w-full place-content-center items-center justify-center rounded-2xl border md:w-[15rem]">
+            <div className="h-[10rem] w-full place-content-center items-center justify-center rounded-2xl border bg-neutral-500 text-center text-xl font-bold text-white md:w-[15rem]">
               {restaurant.name}
             </div>
           )}
