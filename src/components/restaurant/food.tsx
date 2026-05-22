@@ -52,7 +52,9 @@ const Food = ({ restaurant, food, restaurantLoading, foodLoading }: FoodProps) =
             <p>£{Number(food.price).toFixed(2)}</p>
           </div>
           {food?.poster_image === undefined ? (
-            <div></div>
+            <div className="flex animate-pulse flex-col gap-2">
+              <div className="h-[10rem] w-[9rem] rounded-2xl bg-neutral-200 md:w-[15rem]" />
+            </div>
           ) : (
             <img
               style={{

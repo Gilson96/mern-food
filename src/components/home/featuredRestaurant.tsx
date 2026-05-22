@@ -9,7 +9,7 @@ type FeaturedRestaurantProps = {
   loading: boolean;
 };
 
-function FeaturedRestaurant({ loading, feature, title, setIsFiltered }: FeaturedRestaurantProps) {
+function FeaturedRestaurant({ loading, feature, title }: FeaturedRestaurantProps) {
   return (
     <div className="flex flex-col gap-3">
       <p className="py-[1%] text-xl font-medium">{title}</p>
